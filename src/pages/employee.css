@@ -1,0 +1,24 @@
+@media screen and (min-width: 0px) {
+    .main_container {
+        flex-direction: column;
+    }
+    .left_container {
+        width: 100%;
+        height: max-content;
+    }
+    .right_container {
+        margin-left: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .main_container {
+        flex-direction: row;
+    }
+    .left_container {
+        width: 300px;
+    }
+    .right_container {
+        margin-left: 8px;
+    }
+}

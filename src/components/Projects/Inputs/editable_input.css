@@ -1,0 +1,57 @@
+.editable-text-field-container:hover {
+  cursor: pointer;
+}
+.editable-text-field-container .detail-title {
+  margin-right: 50px;
+  border-radius: 3px;
+  padding: 10px 15px;
+}
+.editable-text-field-container .input-text-field {
+  margin-top: 7px;
+  max-width: 90%;
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 50px;
+  border-radius: 5px;
+  padding: 10px 0px;
+  border: none;
+}
+.editable-text-field-container .input-text-field:focus {
+  outline: 1px solid green;
+  padding: 10px 15px;
+}
+
+.editable-date-field-container {
+  display: flex;
+  align-items: center;
+  justify-content: start !important;
+}
+.editable-date-field-container .editable_date_input {
+  border-radius: 5px;
+  padding: 10px 5px;
+}
+.editable-date-field-container .editable_date_input:focus {
+  outline: 0px solid green;
+}
+.editable-date-field-container .editable_date_input:hover {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+  .editable-date-field-container .editable_date_input {
+    min-width: 10px;
+    margin-left: 0px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .editable-date-field-container {
+    flex-direction: column;
+  }
+  .editable-date-field-container label {
+    display: none;
+  }
+  .editable-date-field-container .editable_date_input {
+    margin: 0px;
+    margin-left: 0px;
+  }
+}/*# sourceMappingURL=editable_input.css.map */

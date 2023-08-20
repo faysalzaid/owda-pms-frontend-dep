@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "axios": ["config/axiosConfig"],
+      "*": ["*"]
+    }
+  },
+  "include": ["src"]
+}

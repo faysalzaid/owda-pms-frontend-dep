@@ -1,0 +1,107 @@
+$font: ubuntu;
+$mainColor: #37c5ab;
+$textColor: #ffffff;
+$borderColor: rgba(0, 0, 0, .1);
+
+.crud-container {
+    table {
+        width: 100%;
+        margin-top: 10px;
+        //table-layout:fixed;
+
+        tbody {
+            border: 2px solid $borderColor;
+            tr {
+                border-bottom: 1px solid $borderColor;
+                height: 50px;
+                width: 100%;
+
+                &:hover {
+                    background-color: $borderColor;
+                    border-radius: 10px !important;
+                }
+                .td-number {
+                    //min-width: 5%;
+                    width: 30px;
+                }
+                .td-name {
+                    //min-width: 80%;
+                    padding-left: 0;
+                    overflow: hidden;
+
+                }
+                .td-status {
+                    //width: 20%;                    
+                    width: 100px;
+                }
+                .add-fields {
+                    background-color: red;
+                    width: 1000px important;
+                }
+                td {
+                    padding-left: 15px;
+                    padding-right: 15px;
+
+                    .number-avatar {
+                        background-color: $mainColor;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-family: ubuntu;
+                        color: $textColor;
+                        border-radius: 30px;
+                        padding: 10px;
+                        font-size: 16px;
+                        border: 2px solid $borderColor;
+                    }
+                    .crud-title {
+                        margin-left: 10px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        &:hover {
+                            text-decoration: underline;
+                            cursor: pointer;
+                        }
+                    }
+                    .stts {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 2px 6px;
+                        color: $textColor;
+                        border-radius: 10px;
+                        font-size: 12px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-weight: bold;
+                        max-width: 100px;
+                    }
+                    
+                }
+            }
+        }
+    }
+
+    .add-input {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0px 20px;
+        border: 2px solid $borderColor;
+        margin-top: -2px;
+    }
+    .add-task {
+        padding: 5px;
+        padding-bottom: 10px;
+        border-radius: 4px;
+        &:hover {
+            width: 100%;
+            background-color: $borderColor;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,82 @@
+.crud-container-bid table {
+  width: 100%;
+  margin-top: 10px;
+  table-layout: fixed;
+}
+.crud-container-bid table tbody {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.crud-container-bid table tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  height: 50px;
+  width: 100%;
+}
+.crud-container-bid table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px !important;
+}
+.crud-container-bid table tbody tr .td-year {
+  text-align: left;
+}
+.crud-container-bid table tbody tr .td-allocated {
+  padding-left: 0;
+  text-align: left;
+}
+.crud-container-bid table tbody tr .td-remaining {
+  text-align: left;
+}
+.crud-container-bid table tbody tr .add-fields {
+  background-color: red;
+  width: 1000px important;
+}
+.crud-container-bid table tbody tr td {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.crud-container-bid table tbody tr .stts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  max-width: 90px;
+}
+.crud-container-bid table thead {
+  font-size: 14px;
+  color: #a962e3;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.crud-container-bid table thead:after {
+  content: "_";
+  display: block;
+  line-height: 10px;
+  color: transparent;
+}
+.crud-container-bid table thead:before {
+  content: "_";
+  display: block;
+  line-height: 10px;
+  color: transparent;
+}
+.crud-container-bid .add-input {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  margin-top: -2px;
+}
+.crud-container-bid .add-bid {
+  padding: 5px;
+  padding-bottom: 10px;
+  border-radius: 4px;
+}
+.crud-container-bid .add-bid:hover {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}/*# sourceMappingURL=bids.css.map */

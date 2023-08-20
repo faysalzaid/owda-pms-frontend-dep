@@ -1,0 +1,79 @@
+$mainColor: green;
+$borderColor: rgba(0,0,0,.2);
+
+.editable-text-field-container {
+
+  &:hover {
+    cursor: pointer;
+  }
+.detail-title {
+    margin-right: 50px;
+    border-radius: 3px;
+    padding: 10px 15px;
+}
+
+.input-text-field {
+    margin-top: 7px;
+    //width: auto;
+    max-width: 90%;
+    font-size: 22px;
+    font-weight: bold;
+    margin-right: 50px;
+    border-radius: 5px;
+    padding: 10px 0px;
+    border: none;
+
+    &:focus {
+      outline: 1px solid $mainColor;
+      padding: 10px 15px;
+    }
+    
+  }
+}
+
+.editable-date-field-container {
+  display: flex;
+  align-items: center;
+  justify-content: start !important;
+ 
+  .editable_date_input {
+    //height: 30px;
+    border-radius: 5px;
+   // min-width: 300px;
+    padding: 10px 5px;
+    &:focus {
+      outline: 0px solid $mainColor;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .editable-date-field-container {
+    .editable_date_input {
+      min-width: 10px;
+     // width: 200px !important;
+      margin-left: 0px;
+    }
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .editable-date-field-container {
+    flex-direction: column;
+    label {
+     // display: none;
+     display:none;
+    }
+    .editable_date_input {
+      //min-width: 10px;
+      margin: 0px;
+      //width: 100%;
+      margin-left: 0px;
+      
+    }
+  }
+}

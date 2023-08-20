@@ -1,0 +1,370 @@
+.overview-section {
+    width: 100%;
+    min-height: calc(100vh - 155px);
+    display: none;
+    background-color: white;
+}
+
+.overview-section.show {
+    display: flex;
+}
+
+
+/* ==== Left overview ==== */
+
+.left-overview,
+.right-overview {
+    width: 50%;
+    box-sizing: border-box;
+    padding: 10px 15px;
+}
+
+
+/* project overview */
+
+.project-overview {
+    display: flex;
+    height: 57%;
+    /* max-height: 370px; */
+    margin-top: 20px;
+}
+
+#overview-title {
+    font-size: 14px;
+}
+
+.project-title {
+    width: 50%;
+}
+
+.project-title ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-title ul li {
+    padding: 10px 0;
+    border-bottom: 0.4px solid lightblue;
+}
+
+.project-title ul li:nth-child(9) {
+    border-bottom: 0;
+}
+
+.project-title-div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.project-title-div p {
+    font-size: 13px;
+    width: 50%;
+}
+
+.project-title-div #customer {
+    color: rgb(4, 151, 249);
+}
+
+.project-progress {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: antiquewhite; */
+}
+
+.progress-container {
+    margin-top: 20px;
+    /* background-color: antiquewhite; */
+}
+
+.circle-progress {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    background: conic-gradient(#80c617 0deg, #f5f5f5 0deg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: percentage 3s linear infinite;
+}
+
+.circle-progress::before {
+    position: absolute;
+    content: '';
+    height: 80%;
+    width: 80%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+#demo-countainer {
+    position: relative;
+    /* border: 0.4px solid black; */
+    width: 150px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* gap: 10px; */
+    border-radius: 3px;
+}
+
+#demo-countainer input {
+    width: 100%;
+    outline: none;
+    font-size: 18px;
+    /* padding: 10px 0px; */
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+    border: 0.5px solid;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#demo-countainer button {
+    width: 100%;
+    height: 30px;
+    background-color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+#render-info {
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 18px;
+    /* color: white; */
+    cursor: pointer;
+}
+
+#info-container {
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 72px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    display: none;
+}
+
+#info-container.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid;
+}
+
+.progress-value {
+    position: relative;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.description-div {
+    padding: 20px 0;
+    border-top: 0.5px solid lightgray;
+    border-bottom: 0.5px solid lightgray;
+    display: flex;
+    flex-direction: column;
+}
+
+#description-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0 0 20px 0;
+}
+
+.description-div p {
+    font-size: 13px;
+    color: gray;
+}
+
+.members-div {
+    padding: 18px 10px;
+}
+
+.members-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.members-title span {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#setting-icon {
+    font-size: 13px;
+    color: rgb(4, 151, 249);
+    cursor: pointer;
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    padding-right: 2px;
+}
+
+.user-image {
+    width: 35px;
+    height: 35px;
+    /* background-image: url(../user.png); */
+    background-size: cover;
+}
+
+.member-info {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.member-left {
+    display: flex;
+    gap: 10px;
+}
+
+.member-name {
+    font-weight: bold;
+    color: rgb(4, 151, 249);
+}
+
+.cancel {
+    font-size: 10px;
+    color: red;
+    cursor: pointer;
+}
+
+.right-overview {
+    display: flex;
+    flex-direction: column;
+    border-left: 0.5px solid lightgray;
+}
+
+.right-overview-div-1 {
+    height: 13%;
+    border-bottom: 0.5px solid lightgray;
+    display: flex;
+}
+
+.right-div-1-1 {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 0 15px 0 0;
+}
+
+.open-tasks,
+.days-left {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.open-task-per,
+.days-left-per {
+    font-size: 13px;
+}
+
+.open-task-line,
+.days-left-line {
+    width: 100%;
+    height: 3.5px;
+    box-shadow: 0px 0 1px rgb(0, 0, 0);
+    border-radius: 3px;
+}
+
+.right-div-1-2 {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 0 15px 0 0;
+}
+
+.right-overview-div-2 {
+    height: 87%;
+}
+
+.expenses-div-container {
+    height: 80px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.4PX solid lightgray;
+}
+
+.expenses-div {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.expenses-cost {
+    font-weight: 500;
+}
+
+#total-expenses {
+    color: gray;
+    font-weight: 500;
+}
+
+#billabe-expenses {
+    color: rgb(4, 151, 249);
+    font-weight: 500;
+}
+
+#billed-expenses {
+    color: rgb(92, 151, 2);
+    font-weight: 500;
+}
+
+#unbilled-expenses {
+    color: red;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 971px) {
+    .overview-section {
+        flex-direction: column;
+    }
+    .left-overview,
+    .right-overview {
+        width: 100%;
+        height: 50%;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .project-overview {
+        flex-direction: column;
+    }
+    .project-title,
+    .project-progress {
+        width: 100%;
+        height: 50%;
+    }
+    .project-progress {
+        padding-top: 20px;
+        padding-bottom: 30px;
+    }
+}

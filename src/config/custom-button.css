@@ -1,0 +1,11 @@
+.custom-button {
+    background-color: #048b2b;
+    /* Replace with any desired green color code */
+    /* Add any other styles you want to apply to the button */
+}
+
+.custom-button:hover {
+    background-color: #08a46b;
+    /* Replace with the green shade you want on hover */
+    /* Add any other styles you want to apply to the Button on hover */
+}
