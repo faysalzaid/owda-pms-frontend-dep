@@ -1,3 +1,3 @@
-export const url = 'http://localhost:4000'
-export const bidUrl = 'http://localhost:4000/docs'
-export const bidUserPic = 'http://localhost:4000/images'
+export const url = 'https://backend.owdaeth.org'
+export const bidUrl = 'https://backend.owdaeth.org/docs'
+export const bidUserPic = 'https://backend.owdaeth.org/images'
