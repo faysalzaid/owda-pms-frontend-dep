@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
-import getCookie from "./getCookie";
+
 import jwt_decode from 'jwt-decode'
 
 import { url } from "config/urlConfig";

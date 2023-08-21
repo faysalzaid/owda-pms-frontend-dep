@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
 import axios from 'config/axiosConfig';import TitleChange from "components/Title/Title";
+import 'config/custom-button.css'
+import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -84,17 +86,11 @@ function UsersDetail(props) {
     await axios.post(`${url}/users/${id}`, formData,{withCredentials:true}).then((resp) => {
       // console.log();
       if (resp.data.error) {
-        setErrorMessage(resp.data.error);
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
+        setOpenError({open:true,message:`${resp.data.error}`})
       } else {
         setUsersData(resp.data);
         closeModal();
-        setSuccessMessage("Successfully Updated");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 2000);
+        setOpenSuccess({open:true,message:"Updated Successfully"})
       }
     });
   };
@@ -106,24 +102,60 @@ function UsersDetail(props) {
       }
       setUsersData({});
       closeModal();
-      setSuccessMessage("Successfully Deleted");
+      setOpenSuccess({open:true,message:"Deleted Successfully"})
       setTimeout(() => {
-        setSuccessMessage("");
-        props.history.push("/app/users");
+        props.history.goBack();
       }, 1000);
     });
   };
 
+
+
+
+
+  const [openSuccess, setOpenSuccess] = useState({ open: false, message: "" });
+
+    const handleCloseSuccess = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+  
+      setOpenSuccess({ open: false, message: "" });
+    };
+  
+    const [openError, setOpenError] = useState({ open: false, message: "" });
+  
+    const handleCloseError = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+  
+      setOpenError({ open: false, message: "" });
+    };
+
+
+
+
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/flowbite@1.4.4/dist/flowbite.min.css"
-      />
+
       <PageTitle>{usersData.name}</PageTitle>
-      <p></p>
+      <TitleChange name={`${settings.name} | Dashboard`}/>
+      <ErrorAlert
+        open={openError.open}
+        handleClose={handleCloseError}
+        message={openError.message}
+        horizontal="right"
+      />
+      <SuccessAlert
+        open={openSuccess.open}
+        handleClose={handleCloseSuccess}
+        message={openSuccess.message}
+        horizontal="right"
+      />
+
       <div>
-        <Button onClick={openModal}>Update User</Button>
+        <Button onClick={openModal} className="custom-button">Update User</Button>
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalHeader>Insert Client Info</ModalHeader>
@@ -211,7 +243,7 @@ function UsersDetail(props) {
                 />
               </Label>
 
-              <Button type="submit" block className="mt-4">
+              <Button type="submit" block className="mt-4 custom-button">
                 Update account
               </Button>
             </Form>
@@ -237,7 +269,7 @@ function UsersDetail(props) {
         </ModalFooter>
       </Modal>
 
-      <SectionTitle>Table with actions</SectionTitle>
+   
       {successMessage ? (
         <div
           className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3"

@@ -184,7 +184,8 @@ function UsersList(props) {
 
 
       {/* Notification Section */}
-      <TitleChange name={`${settings.name} | Dashboard`}/><ErrorAlert
+      <TitleChange name={`${settings.name} | Dashboard`}/>
+      <ErrorAlert
         open={openError.open}
         handleClose={handleCloseError}
         message={openError.message}
@@ -299,7 +300,7 @@ function UsersList(props) {
 
       <p></p>
       <div>
-        <Button onClick={openModal}>Register User</Button>
+        <Button onClick={openModal} className="custom-button">Register User</Button>
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalHeader>Insert Client Info</ModalHeader>
@@ -386,7 +387,7 @@ function UsersList(props) {
                 />
               </Label>
 
-              <Button type="submit" block className="mt-4">
+              <Button type="submit" block className="mt-4 custom-button">
                 Create account
               </Button>
             </Form>
@@ -412,7 +413,6 @@ function UsersList(props) {
         </ModalFooter>
       </Modal>
 
-      <SectionTitle>Table with actions</SectionTitle>
       {successMessage ? (
         <div
           className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3"
