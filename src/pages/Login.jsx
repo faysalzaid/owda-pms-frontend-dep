@@ -15,7 +15,7 @@ import { useState } from 'react'
 import { AuthContext } from '../hooks/authContext'
 
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
-import setCookie from 'hooks/setCookie'
+// import setCookie from 'hooks/setCookie'
 
 function Login(props) {
 
@@ -63,14 +63,12 @@ const onSubmit = async(data)=>{
         let data = response.data
         const userData ={
           id:data.id,
-          token: data.token,
           username:data.name,
           email: data.email,
           image:data.image,
           email:data.email,
           role:data.role,
           state:true,
-          accessToken:data.token
           // Add other properties as needed
         }
           const stringFied = JSON.stringify(userData?userData:undefined)
