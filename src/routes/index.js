@@ -262,18 +262,22 @@ const PaymenetRequestDetail = lazy(() =>
     import ('../components/Logistics/paymentRequestDetail'))
 
 const SupplierDetail = lazy(() =>
-        import ('../components/Logistics/SupplierDetail'))
-    // End of Owda Routes
-    /**
-     * ⚠ These are internal routes!
-     * They will be rendered inside the app, using the default `containers/Layout`.
-     * If you want to add a route to, let's say, a landing page, you should add
-     * it to the `App`'s router, exactly like `Login`, `CreateAccount` and other pages
-     * are routed.
-     *
-     * If you're looking for the links rendered in the SidebarContent, go to
-     * `routes/sidebar.js`
-     */
+    import ('../components/Logistics/SupplierDetail'))
+
+const ProjectReport = lazy(() =>
+    import ('../components/Reports/ProjectReport'))
+
+// End of Owda Routes
+/**
+ * ⚠ These are internal routes!
+ * They will be rendered inside the app, using the default `containers/Layout`.
+ * If you want to add a route to, let's say, a landing page, you should add
+ * it to the `App`'s router, exactly like `Login`, `CreateAccount` and other pages
+ * are routed.
+ *
+ * If you're looking for the links rendered in the SidebarContent, go to
+ * `routes/sidebar.js`
+ */
 const routes = [{
         path: '/dashboard', // the url
         component: Dashboard, // view rendered
@@ -683,6 +687,12 @@ const routes = [{
     {
         path: "/paymentRequest/:id",
         component: PaymenetRequestDetail,
+        roles: ['admin', 'general_admin', 'executive_director', 'finance_admin', 'logistic_admin', 'hr']
+    },
+
+    {
+        path: "/projectReport",
+        component: ProjectReport,
         roles: ['admin', 'general_admin', 'executive_director', 'finance_admin', 'logistic_admin', 'hr']
     },
 

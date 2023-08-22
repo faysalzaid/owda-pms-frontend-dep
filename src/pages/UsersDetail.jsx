@@ -31,7 +31,7 @@ import { AuthContext } from "../hooks/authContext";
 import useAuth from "hooks/useAuth";
 function UsersDetail(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {authState} = useAuth(AuthContext)
+  const {authState,settings} = useAuth(AuthContext)
   function openModal() {
     setIsModalOpen(true);
   }

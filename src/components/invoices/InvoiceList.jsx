@@ -49,7 +49,7 @@ import useAuth from 'hooks/useAuth'
 
 
 const InvoiceList = () => {
-    const {authState} = useAuth()
+    const {authState,settings} = useAuth()
     const [users, setUsers] = useState([])
     const [searchResult,setSearchResult] = useState([])
     const [searchTerm,setSearchTerm] = useState("")
