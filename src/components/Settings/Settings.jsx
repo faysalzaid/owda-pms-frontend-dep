@@ -37,7 +37,7 @@ import axios from 'config/axiosConfig';import TitleChange from "components/Title
 
 
 const Settings = () => {
-    const {authState,setSettings} = useContext(AuthContext)
+    const {authState,setSettings,settings} = useContext(AuthContext)
     const [countsData,setCountsData] = useState({ projectCount:"",bidCount:"",activeProjects:"",completedProjects:""})
     const [settingsData,setSettingsData] = useState({ logo:"", name:"", loginlogo:"", address1:"", address2:"" })
     const [logoPreview, setLogoPreview] = useState(null);
@@ -232,30 +232,7 @@ const Settings = () => {
         >
           Account
         </Link>
-        <Link
-          to={"/settings/notifications"}
-          className="px-4 py-2 mt-2 text-sm font-semibold text-gray-400 rounded-lg hover:bg-purple-700 hover:text-white"
-        >
-          Notifications
-        </Link>
-        <Link
-          to={"/settings/notifications"}
-          className="px-4 py-2 mt-2 text-sm font-semibold text-gray-400 rounded-lg hover:bg-purple-700 hover:text-white"
-        >
-          Notifications
-        </Link>
-        <Link
-          to={"/settings/notifications"}
-          className="px-4 py-2 mt-2 text-sm font-semibold text-gray-400 rounded-lg hover:bg-purple-700 hover:text-white"
-        >
-          Notifications
-        </Link>
-        <Link
-          to={"/settings/notifications"}
-          className="px-4 py-2 mt-2 text-sm font-semibold text-gray-400 rounded-lg hover:bg-purple-700 hover:text-white"
-        >
-          Notifications
-        </Link>
+       
       </div>
     </div>
 
