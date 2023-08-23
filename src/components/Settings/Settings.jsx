@@ -135,7 +135,7 @@ const Settings = () => {
         formData.append('address2',settingsForm.address2)
         // console.log(formData);
         await axios.put(`${url}/settings/1`,formData,{withCredentials:true}).then((resp)=>{
-             console.log(resp.data)
+            //  console.log(resp.data)
           if(resp.data.error){
             setOpenError({open:true,message:`${resp.data.error}`})
           }else{

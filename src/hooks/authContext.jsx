@@ -98,7 +98,6 @@ useEffect(()=>{
             const stringFied = JSON.stringify(usersData);
             localStorage.setItem('User', stringFied);
             setAuthState({ id: data?.id, username: data?.name, email: data?.email, image: data?.image, role: data?.role, state: true });
-            const token = data.token; // Store the token in a variable
             // console.log('updated the token');
             // console.log('sent the refresh success');
             // return console.log(token); // Return the token
