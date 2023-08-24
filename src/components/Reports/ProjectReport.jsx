@@ -50,11 +50,10 @@ import useAuth from 'hooks/useAuth'
 
 const ProjectReport = () => {
     const {authState,settings} = useAuth()
-    const [users, setUsers] = useState([])
+    const [singleProject, setSingleProject] = useState({project:{},state:false})
     const [searchResult,setSearchResult] = useState([])
     const [searchTerm,setSearchTerm] = useState("")
     const [fetchedResult,setFetchedResult] = useState([])
-    const [mode,setMode] = useState([])
     const [invoices, setInvoices] = useState([])
     const [projects,setProject] = useState([])
     const [modeModel,setModeModel] = useState(false)
@@ -81,31 +80,9 @@ const ProjectReport = () => {
   
 
 
-  const addMode =async(e)=>{
-    e.preventDefault()
-
-    // console.log();
-    const request = {
-      mode:modeInput.current.value
-    }
-    await axios.post(`${url}/project`,request,{withCredentials:true}).then((resp)=>{
-      if(resp.data.error){
-        setOpenError({open:true,message:`${resp.data.error}`})
-      }else{
-        setMode([...mode,resp.data])
-        closeModeModel()
-        setOpenSuccess({open:true,message:"Successfully Added"})
-      }
-    }).catch((error)=>{
-      setOpenError({open:true,message:`${error.response.data.error}`})
-    })
-    
-  }
 
 
-  function closeModeModel(){
-    setModeModel(false)
-  }
+ 
   
   //  Notifications
     const [openSuccess, setOpenSuccess] = useState({ open: false, message: "" });
@@ -173,51 +150,35 @@ const ProjectReport = () => {
   const searchHandler = async(search)=>{
     setSearchTerm(search)
     if(search!==0){
-      const newPayroll = invoices?.filter((empl)=>{
+      const newD = projects?.filter((empl)=>{
         return Object.values(empl).join(" ").toLowerCase().includes(search.toLowerCase())
       })
       // console.log(newEmployeeList);
-      setSearchResult(newPayroll)
+      setSearchResult(newD)
     }else{
-      setSearchResult(partener)
+      setSearchResult(projects)
     }
   }
 
 
 
   useEffect(()=>{
-    setFetchedResult(searchTerm.length<1?invoices:searchResult)
-  },[invoices,searchTerm])
+    setFetchedResult(searchTerm.length<1?projects:searchResult)
+  },[projects,searchTerm])
 
 
-  
-  
-const handleSubmit = async(e)=>{
-  e.preventDefault();
-  // console.log(formValues);
-  const request = {
-    ProjectId:formValues.ProjectId,
-    UserId:authState.id,
-    date:formValues.date,
-    total:formValues.total,
-    totalPaid:formValues.totalPaid,
-    notes:formValues.notes,
-    PaymentModeId:formValues.PaymentModeId
+
+  const CallSingleProject = (id)=>{
+    console.log('called');
+    const newProject = projects.filter((pr)=>pr.id===id)
+    setSingleProject({project:newProject[0],state:true})
+    console.log(newProject[0]);
+    setInvoices(newProject[0]?.owda_invoices)
+    
   }
-  await axios.post(`${url}/invoice`,request,{withCredentials:true}).then((resp)=>{
-    // console.log(resp.data);
-    if(resp.data.error){
-      setOpenError({open:true,message:`${resp.data.error}`})
-    }else{
-      setInvoices([...invoices,resp.data])
-      setOpenSuccess({open:true,message:"Succesfully Added"})
-      closeModal()
-    }
-  }).catch((error)=>{
-    setOpenError({open:true,message:`${error.response.data.error}`})
- 
-  })
-}
+  
+  
+
 
 const handleDelete = ()=>{
   axios.delete(`${url}/invoice/${isDeleteOpen.id}`,{withCredentials:true}).then((resp)=>{
@@ -233,13 +194,18 @@ const handleDelete = ()=>{
 
 }
   
-const captureProject = ()=>{
+
+
+
+const handleChange = (e)=>{
 
 }
-// Invoice Data  
+// project search func
 
 
-// End of invoice data
+
+
+// end of project search fun
   
     // on page change, load new sliced data
     // here you would make another server request for new data
@@ -264,20 +230,7 @@ const captureProject = ()=>{
       />
 
 
-      {/* Search section */}
-      <div className='mb-5'>
-        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-        <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-100 dark:text-gray-400" fill="none" strokeWidth="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
-            <Input type="search" id="default-search" value={searchTerm} onChange={(e)=>searchHandler(e.target.value)} 
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 
-            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Invoice Values..." required />
-        </div>
-            
-        </div>
-        {/* End of search List */}
+     
 
         {/* End of Notification */}
   
@@ -296,59 +249,7 @@ const captureProject = ()=>{
 
         {/* End of delete Section */}
 
-          {/* Payment MOde section */}
-      <Modal isOpen={modeModel} onClose={closeModeModel}>
-      <ModalHeader>Add Mode</ModalHeader>
-      <ModalBody>
-      <form onSubmit={addMode}>
-        <div className="grid grid-cols-1 gap-4">
-          <Label>
-            <span>Mode</span>
-            <Input
-              type="text"
-              ref={modeInput}
-              className="mt-1"
-              name="totalPaid"
-              onChange={(e)=>setFormValues({...formValues,totalPaid:e.target.value})}
-              required
-            />
-          </Label>
-              
-        </div>
-        <div className="hidden sm:block">
-
-         <Button className="mt-6 custom-button" type="submit">Submit</Button>
-        </div>
-           <div className=" mt-2 block  sm:hidden">
-<Button block size="large" type="submit" className="custom-button">
-              Accept
-            </Button>
-          </div>
-      
-        </form>
-      </ModalBody>
-      <ModalFooter>
-      <div className="hidden sm:block">
-            <Button layout="outline" onClick={closeModeModel}>
-              Cancel
-            </Button>
-        </div>
-        <div className="block w-full sm:hidden">
-            <Button block size="large" layout="outline" onClick={closeModeModel}>
-              Cancel
-            </Button>
-          </div>
-
-          {/* <div className="block w-full sm:hidden">
-<Button block size="large" type="submit" className="custom-button">
-              Accept
-            </Button>
-          </div> */}
-      </ModalFooter>
-    </Modal>
-
-
-        {/* End of Payment Mode Section */}
+         
 
 
 
@@ -364,36 +265,43 @@ const captureProject = ()=>{
 
       
       {/* Filter section */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="flex container mx-auto px-4 py-8">
       <div className="mb-2">
         <h2 className="text-2xl font-semibold mb-4">Filter Project with their invoices</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Project Filter */}
           <div className="relative">
-          <label htmlFor="projectFilter" className="block font-medium">
-            Project
-          </label>
-          <div className="relative mt-1">
-            <input
-              type="text"
-              id="projectSearch"
-              className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-opacity-50"
-              placeholder="Search Project"
-            />
-            <select
-              id="projectFilter"
-              className="absolute top-0 left-0 w-full border rounded-md opacity-0 cursor-pointer"
-            >
-              <option value="">All Projects</option>
-              <option value="project1">Project 1</option>
-              <option value="project2">Project 2</option>
-              {/* Add more projects */}
-            </select>
+            <label htmlFor="projectFilter" className="block font-medium">
+              Project
+            </label>
+            <div className="relative mb-4">
+              <input
+                type="text"
+                id="projectSearch"
+                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-opacity-50"
+                placeholder="Search Project"
+                value={searchTerm}
+                onChange={(e)=>searchHandler(e.target.value)}
+              />
+              <Select
+                id="projectFilter"
+                className="absolute w-full rounded-md mb-4 mt-2 bg-white border opacity-2 cursor-pointer"
+                
+                
+              >
+                {fetchedResult.map((rs)=>
+                <option key={rs.id} value={rs.id} onClick={()=>CallSingleProject(rs.id)}>{rs.name}</option>
+                
+                )}
+               
+                {/* Add more projects */}
+              </Select>
+            </div>
           </div>
-        </div>
 
-          <div className="relative">
-            <label htmlFor="monthFilter" className="block font-medium">
+
+          <div className="relative sm:mt-4">
+            <label htmlFor="monthFilter" className="block font-medium mt-4">
               Month
             </label>
             <select
@@ -416,14 +324,13 @@ const captureProject = ()=>{
       {/* end of filter section */}
 
       {/* Major data  */}
-
+      {singleProject.state?      
       <div className="flex  bg-gray-100">
             <div className="w-full bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 shadow-lg">
                 <div className="flex justify-between p-4">
                     <div>
-                        <h1 className="text-3xl italic font-extrabold tracking-widest text-green-500">Owda-project Report</h1>
-                        <p className="text-base">If account is not paid within 7 days the credits details supplied as
-                            confirmation.</p>
+                        <h1 className="text-3xl  font-extrabold tracking-widest text-green-500">Owda-project Report</h1>
+                        <span className='font-bold'>Project name: {singleProject.project.name}</span>
                     </div>
                     <div className="p-2">
                         <ul className="">
@@ -443,23 +350,22 @@ const captureProject = ()=>{
                         </ul>
                     </div>
                 </div>
-                <div className="w-full h-0.5 bg-indigo-500"></div>
+                <div className="w-full bg-indigo-500"></div>
                 <div className="flex justify-between p-4">
                     <div>
-                        <h6 className="font-bold">Order Date : <span className="text-sm font-medium"> 12/12/2022</span></h6>
-                        <h6 className="font-bold">Order ID : <span className="text-sm font-medium"> 12/12/2022</span></h6>
+                        <h6 className="font-bold">Project Code : <span className="text-sm font-bold"> {singleProject.project.code}</span></h6>
+                        <h6 className="font-bold">Project ID : <span className="text-sm font-bold"> {singleProject.project.id}</span></h6>
                     </div>
                     <div className="w-40">
-                        <address className="text-sm">
-                            <span className="font-bold"> Billed To : </span>
-                            Joe Smith
-                            795 Folsom Ave
-                            San Francisco, CA 94107
-                            P: (123) 456-7890
+                        <address className="text-sm font-bold">
+                            <p className="font-bold">Percentage | <span className='text-green-500'>{singleProject.project.percentage} </span> </p>
+                            <p className="font-bold">startTime |<span className='text-blue-500'>{singleProject.project.starttime} </span> </p>
+                            <p className="font-bold">EndTime | <span className='text-red-500'>{singleProject.project.endtime} </span>   </p>
+                           
                         </address>
                     </div>
                     <div className="w-40">
-                        <address className="text-sm">
+                        <address className="text-sm font-bold">
                             <span className="font-bold">Ship To :</span>
                             Joe doe
                             800 Folsom Ave
@@ -469,25 +375,22 @@ const captureProject = ()=>{
                     </div>
                     <div></div>
                 </div>
-                <div className="flex justify-center p-4">
+                <div className="w-full p-4">
                     <div className="border-b border-gray-200 shadow">
-                        <table className="">
+                        <table className="w-full">
                             <thead className="bg-gray-50 dark:bg-gray-900">
                                 <tr>
-                                    <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
-                                        #
+                                <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
+                                        ID
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
-                                        Product Name
+                                        Date
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
-                                        Quantity
+                                        Amount
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
-                                        Rate
-                                    </th>
-                                    <th className="px-4 py-2 text-xs text-gray-500 dark:text-gray-100 ">
-                                        Subtotal
+                                        Created For
                                     </th>
                                 </tr>
                             </thead>
@@ -498,12 +401,10 @@ const captureProject = ()=>{
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-900 dark:text-gray-100">
-                                            Amazon Brand - Symactive Men's Regular Fit T-Shirt
+                                            Amazon Brand
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500 dark:text-gray-100">4</div>
-                                    </td>
+                                    
                                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-100">
                                         $20
                                     </td>
@@ -511,54 +412,11 @@ const captureProject = ()=>{
                                         $30
                                     </td>
                                 </tr>
-                                <tr className="whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-100">
-                                        2
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900 dark:text-gray-100">
-                                            Amazon Brand - Symactive Men's Regular Fit T-Shirt
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500 dark:text-gray-100">2</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-100">
-                                        $60
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        $12
-                                    </td>
-                                </tr>
-                                <tr className="border-b-2 whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-100">
-                                        3
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900 dark:text-gray-100">
-                                            Amazon Brand - Symactive Men's Regular Fit T-Shirt
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500 dark:text-gray-100">1</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-100">
-                                        $10
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        $13
-                                    </td>
-                                </tr>
+                                
                                 <tr className="">
                                     <td colSpan="3"></td>
                                     <td className="text-sm font-bold">Sub Total</td>
                                     <td className="text-sm font-bold tracking-wider"><b>$950</b></td>
-                                </tr>
-                       
-                                <tr>
-                                    <th colSpan="3"></th>
-                                    <td className="text-sm font-bold"><b>Tax Rate</b></td>
-                                    <td className="text-sm font-bold"><b>$1.50%</b></td>
                                 </tr>
                             
                                 <tr className="text-white bg-gray-800">
@@ -585,7 +443,8 @@ const captureProject = ()=>{
 
             </div>
         </div>
-       
+       :<p className='ml-4'>Select Project</p>}
+
 
 
       {/* End of Major data */}
