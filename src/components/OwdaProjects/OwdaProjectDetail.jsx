@@ -636,19 +636,19 @@ const filterByCategory = async()=>{
       <div className="w-full md:w-1/2 mb-4">
         <h2 className="text-lg dark:text-gray-100 font-semibold mb-4">Project Details</h2>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Project Name</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Name</p>
           <p className="text-sm font-semibold text-orange-700 dark:text-yellow-400">{project.name}</p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Account Code</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Account Code</p>
           <p className="text-sm font-semibold text-red-700 dark:text-red-400">{project.code}</p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Description</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Description</p>
           <p className="text-sm font-semibold text-pink-700 dark:text-pink-400">{project.description}</p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-800 dark:text-gray-300">Project Category</p>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-300">Project Category</p>
           <p className="text-sm font-semibold text-indigo-700 dark:text-indigo-400">
             {category.map((ca) => (ca.id === project.owdaCategoryId ? ca.name : ""))}
           </p>
@@ -657,27 +657,33 @@ const filterByCategory = async()=>{
       <div className="w-full md:w-1/2 mb-4 mt-2">
         <h2 className="text-lg dark:text-gray-100 font-semibold mb-4">Other Details</h2>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Project Partner</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Partner</p>
           <p className="text-sm font-semibold text-green-700 dark:text-green-400">
             {partener.map((ac) => (ac.id === project.owdaPartenerId ? ac.name : ""))}
           </p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Project Donor</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Donor</p>
           <p className="text-sm font-semibold text-red-700 dark:text-red-400">
             {donor.map((bn) => (bn.id === project.owdaDonorId ? bn.name : ""))}
           </p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Project Sector</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Sector</p>
           <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">
             {sector.map((bn) => (bn.id === project.owdaSectorId ? bn.name : ""))}
           </p>
         </div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Project Account</p>
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Account</p>
           <p className="text-sm font-semibold text-red-600">{account.map((bn)=>bn.id==project.owdaAccountId?<Link to={`/app/accounts/${bn.id}`} key={bn.id}>{bn.name}</Link>:"")}</p>
             <p className="text-sm font-semibold text-purple-700">{parseFloat(account.map((bn)=>bn.id==project.owdaAccountId?bn.balance:"")).toLocaleString({maximumFractionDigits:2})}</p>
+           </div>
+
+
+           <div className="mb-4">
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project inUse Amount</p>
+          <p className="text-sm font-semibold text-red-700 dark:text-red-400">ETB-{parseFloat(project.inUseAmount).toLocaleString({})}</p>
            </div>
        
         </div>
@@ -737,36 +743,36 @@ const filterByCategory = async()=>{
         <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
         <div className="">
-        <div className="text-sm font-medium text-gray-900 dark:text-gray-300">
+        <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">
                       {owd.name}
           </div>
         </div>
       </div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.code}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.code}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.unitQuantity}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.unitQuantity}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.duration}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.duration}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.unitCost}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.unitCost}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.donorCharge}%</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.donorCharge}%</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{bCategory.map((bc)=>bc.id===owd.owdaBudgetLineCategoryId?bc.name:"")}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{bCategory.map((bc)=>bc.id===owd.owdaBudgetLineCategoryId?bc.name:"")}</div>
     </td>
   
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{parseFloat(owd.totalAmount).toLocaleString({maximumFractionDigits:2})}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{parseFloat(owd.totalAmount).toLocaleString({maximumFractionDigits:2})}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/budgetLines/${owd.id}`}><FaEdit className='text-blue-500'/></Link></div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/budgetLines/${owd.id}`}><FaEdit className='text-blue-500'/></Link></div>
     </td>
   </tr>
 

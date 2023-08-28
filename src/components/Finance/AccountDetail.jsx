@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
@@ -98,6 +98,11 @@ const AccountDetail = () => {
   
       setOpenError({ open: false, message: "" });
     };
+
+
+  
+
+    
 
     // End of notifications
     const [isOpen,setIsOpen] = useState(false)
@@ -505,7 +510,7 @@ const AccountDetail = () => {
             </form>
           </ModalBody>
           <ModalFooter>
-            <button className="px-4 py-2 text-white bg-purple-600 rounded-md hover:bg-purple-600" onClick={handleTransfer}>
+            <button className="px-4 py-2 text-white custom-button rounded-md hover:bg-purple-600" onClick={handleTransfer}>
               Confirm
             </button>
           </ModalFooter>
@@ -513,7 +518,7 @@ const AccountDetail = () => {
 
         {/* End of Transfer Section */}
         <div className='flex'>
-        <Button onClick={openModal}>Update Account</Button>
+        <Button onClick={openModal} className="custom-button">Update Account</Button>
         <Button onClick={openDelete} style={{backgroundColor:'red'}} className="ml-4 text-lg text-white-600 hover:text-red-800">
        <RiDeleteBin6Line />
         </Button>

@@ -367,12 +367,14 @@ function UsersList(props) {
                   <option value={'admin'}  disabled={authState.role==="admin"?false:true}>admin</option>
                   <option value={'general_admin'} disabled={authState.role==="admin"||authState.role==="general_admin"||authState.role==="executive_director"?false:true}>General Admin</option>
                   <option value={'executive_director'} disabled={authState.role==="admin"||authState.role==="general_admin"||authState.role==="executive_director"?false:true}>Executive Director</option>
-                  <option value={'staff'}>Staff</option>
+                  <option value={'finance_admin'}>Finance Admin</option>
                   <option value={'finance'}>Finance</option>
                   <option value={'logistic_admin'}>Logistic Admin</option>
                   <option value={'logistic'}>Logistics</option>
                   <option value={'hr'}>HR</option>
                   <option value={'warehouse'}>Warehouse</option>
+                  <option value={'staff'}>Staff</option>
+                  
                 </Field>
               </Label>
               <Label className="mt-4">

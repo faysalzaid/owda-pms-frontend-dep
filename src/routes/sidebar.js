@@ -165,12 +165,27 @@ routes = [{
     //     name: 'Contracts',
     //     roles: ['admin', 'finance', 'contractadmin']
     // },
+
+
+
     {
-        path: '/app/reports',
-        icon: 'FaReadme',
         name: 'Reports',
-        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'finance_admin']
+        icon: 'FaReadme',
+        routes: [
+            // submenu
+            {
+                path: '/app/ProjectReport',
+                icon: 'BsUiRadiosGrid',
+                name: 'Project-Invoice',
+                roles: ['admin', 'general_admin', 'executive_director', 'finance', 'finance_admin']
+            },
+
+
+
+        ],
     },
+
+
     {
         name: 'Finance',
         icon: 'FaRegMoneyBillAlt',

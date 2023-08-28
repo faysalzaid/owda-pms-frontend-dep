@@ -77,6 +77,10 @@ function UsersDetail(props) {
   }, []);
 
   const updateUser = async (data) => {
+    if(data.role===undefined || data.role==="Select"){
+      setOpenError({open:true,message:`Please Select role`})
+      return
+      }
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("email", data.email);
@@ -208,7 +212,7 @@ function UsersDetail(props) {
                   type="password"
                 />
               </Label>
-              {usersData.role==='admin'?"":<>
+              {usersData.role==='admin'||usersData.role==="general_admin"||usersData.role==="executive_director"?<>
               
               <Label className="mt-4">
                 <span>Role</span>
@@ -218,17 +222,20 @@ function UsersDetail(props) {
                   name="role"
                 >
                <option>Select</option>
-                  <option>admin</option>
-                  <option>finance</option>
-                  <option>design</option>
-                  <option>roadquality</option>
-                  <option>client</option>
-                  <option>engineer</option>
-                  <option>hr</option>
-                  <option>contractadmin</option>
+              
+               <option value={'admin'}  disabled={authState.role==="admin"?false:true}>admin</option>
+                  <option value={'general_admin'} disabled={authState.role==="admin"||authState.role==="general_admin"||authState.role==="executive_director"?false:true}>General Admin</option>
+                  <option value={'executive_director'} disabled={authState.role==="admin"||authState.role==="general_admin"||authState.role==="executive_director"?false:true}>Executive Director</option>
+                  <option value={'finance_admin'}>Finance Admin</option>
+                  <option value={'finance'}>Finance</option>
+                  <option value={'logistic_admin'}>Logistic Admin</option>
+                  <option value={'logistic'}>Logistics</option>
+                  <option value={'hr'}>HR</option>
+                  <option value={'warehouse'}>Warehouse</option>
+                  <option value={'staff'}>Staff</option>
                 </Field>
               </Label>  
-              </>}
+              </>:"Only Admins"}
             
 
               <Label className="mt-4">
