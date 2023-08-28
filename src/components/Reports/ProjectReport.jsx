@@ -57,8 +57,7 @@ const ProjectReport = () => {
     const [invoices, setInvoices] = useState([])
     const [projects,setProject] = useState([])
     const [invoiceList,setInvoiceList] = useState([])
-    const [countsData,setCountsData] = useState({ projectCount:"",bidCount:"",activeProjects:"",completedProjects:""})
-    const [formValues,setFormValues] = useState({date:"",notes:"",totalPaid:"",total:0,UserId:"",ProjectId:"",PaymentModeId:""})
+    const [savedInvoice,setSavedInvoice] = useState([])
     const [isDeleteOpen,setIsDeleteOpen] = useState({open:false,id:""})
     const modeInput = useRef()
     let amountRef = useRef()
@@ -121,11 +120,7 @@ const ProjectReport = () => {
           })
     
          
-          await axios.get(`${url}/counts`,{withCredentials:true}).then((resp)=>{
-            const data = resp.data
-            setCountsData({ projectCount:data.projectsCount,bidCount:data.countBids,activeProjects:data.activeProjectsCount,completedProjects:data.completedProjects})
-          })
-    
+       
        
 
         }
@@ -139,11 +134,7 @@ const ProjectReport = () => {
   // END OF USE EFFECT
   
   
-  useEffect(()=>{
-      const newPr = projects.filter((pr)=>pr.id===formValues.ProjectId)
-      setFormValues({...formValues,total:newPr[0]?.totalCost})
-      // console.log('hitted');
-  },[formValues.ProjectId])
+
   
 
 
@@ -169,8 +160,8 @@ const ProjectReport = () => {
 
 
   const CallSingleProject = (id)=>{
-    // console.log('called');
     const newProject = projects.filter((pr)=>pr.id===id)
+    // console.log('called',newProject);
     setSingleProject({project:newProject[0],state:true})
     setInvoices(newProject[0]?.owda_invoices)
     setInvoiceList(newProject[0]?.owda_invoices)
@@ -205,16 +196,35 @@ const filterInvoices = (filterValue) => {
     // return invoiceYearMonth
   });
 
-  console.log('filtered',filtered);
+  // console.log('filtered',filtered);
+  setInvoices(filtered);
+  setSavedInvoice(filtered)
+};
+  
+
+
+
+const filterReason = (filterValue) => {
+  // console.log(filterValue);
+  if(filterValue==="All"){
+    setInvoices(invoiceList)
+    // console.log('returning');
+    return 
+  }
+  const filtered = savedInvoice.length>0?savedInvoice.filter((invoice) => {
+    return invoice.createdFor.includes(filterValue);
+   
+  }):invoiceList?.filter((invoice)=>{
+    return invoice.createdFor.includes(filterValue);
+  });
+
+  // console.log('Reached');
   setInvoices(filtered);
 };
   
 
 
 
-const handleChange = (e)=>{
-
-}
 // project search func
 
 
@@ -313,8 +323,14 @@ const handleChange = (e)=>{
               </Select>
             </div>
           </div>
+          {/* end of filter project */}
+
+          
 
 
+          
+
+            {/* fitler by date */}
           <div className="relative">
             <label htmlFor="monthFilter" className="block font-medium mt-6">
               
@@ -330,6 +346,32 @@ const handleChange = (e)=>{
                 onChange={(e) => filterInvoices(e.target.value)}
               />
            </div>
+
+           {/* end of filter by date */}
+
+           {/* filter by reason */}
+                   {/* Project Filter */}
+          <div className="relative">
+            <label htmlFor="projectFilter" className="block font-medium dark:text-gray-100">
+              Reason
+            </label>
+            <div className="relative mb-4">
+              <Select
+                id="projectFilter"
+                className="absolute w-full rounded-md mb-4 mt-0 bg-white border opacity-2 cursor-pointer"
+                onChange={(e)=>filterReason(e.target.value)}
+                
+              >
+                <option value={'All'}>All</option>
+                <option value={'salary'}>Salary</option>
+                <option value={'logistic'}>Logistics</option>
+               
+                {/* Add more projects */}
+              </Select>
+            </div>
+          </div>
+          {/* end of filter project */}
+           {/* end of filter by reason */}
 
 
            
@@ -365,23 +407,23 @@ const handleChange = (e)=>{
     <div className="w-full bg-indigo-500"></div>
     <div className="flex justify-between p-4">
       <div>
-        <h6 className="font-bold">Project Code : <span className="text-sm font-bold"> {singleProject.project.code}</span></h6>
-        <h6 className="font-bold">Project ID : <span className="text-sm font-bold"> {singleProject.project.id}</span></h6>
+        <h6 className="font-bold">Project Code : <span className="text-sm font-bold"> {singleProject?.project.code}</span></h6>
+        <h6 className="font-bold">Project ID : <span className="text-sm font-bold"> {singleProject?.project.id}</span></h6>
       </div>
       <div className="w-40">
         <address className="text-sm font-bold">
-          <p className="font-bold">Percentage | <span className='text-green-500'>{singleProject.project.percentage} </span> </p>
-          <p className="font-bold">startTime |<span className='text-blue-500'>{singleProject.project.starttime} </span> </p>
-          <p className="font-bold">EndTime | <span className='text-red-500'>{singleProject.project.endtime} </span>   </p>
+          <p className="font-bold">Percentage | <span className='text-green-500'>{singleProject?.project.percentage} </span> </p>
+          <p className="font-bold">startTime |<span className='text-blue-500'>{singleProject?.project.starttime} </span> </p>
+          <p className="font-bold">EndTime | <span className='text-red-500'>{singleProject?.project.endtime} </span>   </p>
         </address>
       </div>
       <div className="w-40">
         <address className="text-sm font-bold">
-          <span className="font-bold">Ship To :</span>
-          Joe doe
-          800 Folsom Ave
-          San Francisco, CA 94107
-          P: + 111-456-7890
+          <span className="font-bold">Account Info </span><br></br>
+         A.Code: {singleProject?.project?.owda_account?.code}<br></br>
+         A.Name: {singleProject?.project?.owda_account?.name}<br></br>
+         A.Id: {singleProject?.project?.owda_account?.id}<br></br>
+     
         </address>
       </div>
       <div></div>
