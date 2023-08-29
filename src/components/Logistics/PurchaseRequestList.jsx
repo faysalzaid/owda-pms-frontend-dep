@@ -16,7 +16,7 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
 import CNavbar from 'components/CNavBar/Cnavbar'
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
-
+import "config/custom-button.css"
 
 import {
   TableBody,
@@ -353,7 +353,7 @@ useEffect(()=>{
 
         {/* End of delete Section */}
         <CNavbar  className="dark:bg-gray-100"/>
-        <Button onClick={openModal} className="mt-4">New Purchase Request</Button>
+        <Button onClick={openModal} className="mt-4 custom-button">New Purchase Request</Button>
   
       
         </TableContainer>

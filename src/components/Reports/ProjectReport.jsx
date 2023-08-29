@@ -135,7 +135,44 @@ const ProjectReport = () => {
   
   
 
+  const printSectionRef = useRef(null);
+
+  const printSection = () => {
+    const printContents = printSectionRef.current.innerHTML;
   
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <style>
+            @media print {
+              body * {
+                visibility: hidden;
+              }
+              #print-section, #print-section * {
+                visibility: visible;
+              }
+              #print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div id="print-section">${printContents}</div>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+  };
+  
+
 
 
   const searchHandler = async(search)=>{
@@ -383,12 +420,19 @@ const filterReason = (filterValue) => {
 
       {/* Major data  */}
       {singleProject.state?      
-        <div className="flex  bg-gray-100">
+        <div ref={printSectionRef} className="flex  bg-gray-100">
   <div className="w-full bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 shadow-lg">
     <div className="flex justify-between p-4">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-widest text-green-500">Owda-project Report</h1>
+        <h1 className="text-3xl flex font-extrabold tracking-widest text-green-500">Owda-project Report
+        <div className='mt-1 ml-4'>
+          <div className="flex items-end justify-end space-x-3">
+            <button className="px-4 py-2 text-sm text-green-600 bg-green-100" onClick={printSection}>Print</button>
+          </div>
+        </div>
+        </h1>
         <span className='font-bold'>Project name: {singleProject.project.name}</span>
+        
       </div>
       <div className="p-2">
         <ul className="">
@@ -401,6 +445,7 @@ const filterReason = (filterValue) => {
               2821 Kensington Road,Avondale Estates, GA 30002 USA
             </span>
           </li>
+          
         </ul>
       </div>
     </div>
@@ -523,12 +568,8 @@ const filterReason = (filterValue) => {
         {/* ... */}
       </div>
     </div>
-    <div className="w-full h-0.5 bg-indigo-500"></div>
-    <div className="p-4">
-      <div className="flex items-end justify-end space-x-3">
-        <button className="px-4 py-2 text-sm text-green-600 bg-green-100">Print</button>
-      </div>
-    </div>
+  
+    
   </div>
 </div>
 

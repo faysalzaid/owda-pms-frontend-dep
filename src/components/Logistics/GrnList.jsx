@@ -328,7 +328,7 @@ const GRNList = () => {
         <ModalHeader>Register GRN</ModalHeader>
         <ModalBody>
           <form onSubmit={handleSend}>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-2 gap-4">
 
             <Label>
                 <span>Purchase Group</span>

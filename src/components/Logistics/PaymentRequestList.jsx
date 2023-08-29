@@ -15,7 +15,7 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
 import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
-
+import "config/custom-button.css"
 import {
   TableBody,
   TableContainer,
@@ -353,7 +353,7 @@ const PaymentList = () => {
           </ModalBody>
           <ModalFooter>
           <div className="hidden sm:block">
-              <Button className="mt-6" type="submit" onClick={sendApproval}>Submit</Button>
+              <Button className="mt-6 custom-button" type="submit" onClick={sendApproval}>Submit</Button>
             </div>
           </ModalFooter>
         </Modal>

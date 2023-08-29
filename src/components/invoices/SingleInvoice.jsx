@@ -16,13 +16,29 @@ const printSection = () => {
   printWindow.document.open();
   printWindow.document.write(`
     <html>
-    <head>
-      <title>Print</title>
-    </head>
-    <body>${printContents}</body>
+      <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+          @media print {
+            body * {
+              visibility: hidden;
+            }
+            #print-section, #print-section * {
+              visibility: visible;
+            }
+            #print-section {
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div id="print-section">${printContents}</div>
+      </body>
     </html>
   `);
-
   printWindow.document.close();
   printWindow.print();
   printWindow.close();

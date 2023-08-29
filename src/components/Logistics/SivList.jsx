@@ -13,7 +13,7 @@ import RoundIcon from '../RoundIcon';
 import response from '../../utils/demo/tableData';
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 import {
@@ -337,7 +337,7 @@ const SIVList = () => {
           </ModalBody>
           <ModalFooter>
           <div className="hidden sm:block">
-              <Button className="mt-6" type="submit" onClick={sendToStore}>Submit</Button>
+              <Button className="mt-6 custom-button" type="submit" onClick={sendToStore}>Submit</Button>
             </div>
           </ModalFooter>
         </Modal>
@@ -345,7 +345,7 @@ const SIVList = () => {
 
         <CNavbar />
 
-        <Button onClick={openModal} className="mt-4">New SIV</Button>
+        <Button onClick={openModal} className="mt-4 custom-button">New SIV</Button>
       </TableContainer>
       {/* Main Model */}
       <Modal isOpen={isOpen} onClose={closeModal}>
@@ -434,7 +434,7 @@ const SIVList = () => {
                <Button className="mt-6 custom-button" type="submit">Submit</Button>
             </div>
             <div className="mt-2 block sm:hidden">
-              <Button block size="large">
+              <Button block size="large" type="submit" className="custom-button">
                 Accept
               </Button>
             </div>

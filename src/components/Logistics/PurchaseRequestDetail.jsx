@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 
@@ -335,7 +335,7 @@ const PurchaseRequestDetail = (props) => {
 
         {/* End of delete Section */}
         <div className='flex'>
-        <Button onClick={openModal}>Update Purchase Request</Button>
+        <Button onClick={openModal} className="custom-button">Update Purchase Request</Button>
         <TrashIcon className='w-6 h-6 text-red-600 mt-1 ml-4' onClick={openDelete}/>
         </div>
   
@@ -346,7 +346,7 @@ const PurchaseRequestDetail = (props) => {
       <ModalHeader>Register purchase</ModalHeader>
       <ModalBody>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           
 
 

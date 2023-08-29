@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 
@@ -316,7 +316,7 @@ const IncomeList = () => {
 
         {/* End of delete Section */}
 
-        <Button onClick={openModal}>Register Income</Button>
+        <Button onClick={openModal} className="custom-button">Register Income</Button>
   
       
         </TableContainer>
