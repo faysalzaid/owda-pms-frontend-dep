@@ -442,7 +442,7 @@ const filterReason = (filterValue) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <span className="text-sm">
-              2821 Kensington Road,Avondale Estates, GA 30002 USA
+              Owda-main office, ayardaga street, 
             </span>
           </li>
           

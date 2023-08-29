@@ -269,6 +269,7 @@ routes = [{
     {
         name: 'Office Info',
         icon: 'PagesIcon',
+        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'hr'],
         routes: [
             // submenu
             {
@@ -321,6 +322,7 @@ routes = [{
     {
         name: 'Jobs',
         icon: 'FaForumbee',
+        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'hr'],
         routes: [
             // submenu
             {
