@@ -171,6 +171,7 @@ routes = [{
     {
         name: 'Reports',
         icon: 'FaReadme',
+        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'finance_admin'],
         routes: [
             // submenu
             {

@@ -58,7 +58,11 @@ function Dashboard(props) {
           if(resp.data.error){
             console.log(resp.data.error);
           }
-        setProject(resp.data)
+          const sortedProjects = resp.data.sort((a, b) => new Date(b.starttime) - new Date(a.starttime));
+
+          // console.log(sortedProjects);
+           const latestProjects = sortedProjects.slice(0, 5);
+           setProject(latestProjects);
     
         }).catch((err)=>{
           console.log(err);
