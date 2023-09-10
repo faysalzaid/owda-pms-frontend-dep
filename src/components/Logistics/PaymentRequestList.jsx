@@ -51,8 +51,7 @@ const PaymentList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fetchedResult, setFetchedResult] = useState([]);
   const [purchase,setPurchase] = useState([]);
-  const [suppliers,setSuppliers] = useState([]);
-  const [toStoreForm,setToPaymentForm] = useState({name:"",type:"",date:"",})
+  const [serviceGroup,setServiceGroup] = useState([])
   const [countsData, setCountsData] = useState({
     projectCount: '',
     bidCount: '',
@@ -94,6 +93,15 @@ const PaymentList = () => {
     setOpenError({ open: false, message: '' });
   };
 
+
+  const [serviceOpen,setServiceOpen] = useState(false)
+  function closeService() {
+    setServiceOpen(false);
+  }
+
+  function openService() {
+    setServiceOpen(true);
+  }
   // End of notifications
   const [isOpen, setIsOpen] = useState(false);
 
@@ -130,7 +138,7 @@ const PaymentList = () => {
       });
 
       await axios.get(`${url}/pGroup`, { withCredentials: true }).then((resp) => {
-        //   console.log('purchase',resp.data);
+          // console.log('purchase',resp.data);
         if (resp.data.error) return setOpenError({ open: true, message: "Error Occurred" })
         // const data = resp.data.filter((pr) => pr.status === "completed")
         // console.log(data);
@@ -235,7 +243,7 @@ const PaymentList = () => {
 
   const handleSend = async (e) => {
     e.preventDefault()
-    // console.log('paymentform',paymentForm);
+    console.log('paymentform',paymentForm);
     if (paymentForm.purchaseRequestGroupId === "" || paymentForm.purchaseRequestGroupId === "Select Purchase Request") return setOpenError({ open: true, message: "Please Provide Purchase Request" })
     await axios.post(`${url}/paymentRequest`, paymentForm, { withCredentials: true }).then((resp) => {
       if (resp.data.error) return setOpenError({ open: true, message: `${resp.data.error}` })
@@ -252,7 +260,7 @@ const PaymentList = () => {
     // Add your logic to handle sending payment and API call
   }
 
-
+  
   useEffect(()=>{
     const data = purchase.filter((pr)=>pr.id===parseInt(paymentForm.purchaseRequestGroupId))
     const newD = data[0]?.purchase_requests?.reduce((acc,curr)=>acc+parseFloat(curr.actualTotalPrice),0)
@@ -361,7 +369,8 @@ const PaymentList = () => {
 
         <CNavbar />
 
-        <Button onClick={openModal} className="mt-4 custom-button">New payment</Button>
+        <Button onClick={openModal} className="mt-4 custom-button btn-sm">New payment</Button>
+
       </TableContainer>
       {/* Main Model */}
       <Modal isOpen={isOpen} onClose={closeModal}>
@@ -371,14 +380,14 @@ const PaymentList = () => {
             <div className="grid grid-cols-2 gap-4">
 
             <Label>
-                <span>Purchase Request</span>
+                <span>Purchase Request G</span>
                 <Select
                   className="mt-1"
                   name="purchaseRequestGroupId"
                   onChange={(e) => setpaymentForm({ ...paymentForm, purchaseRequestGroupId: e.target.value })}
                   required
                 >
-                  <option>Select Purchase Request</option>
+                  <option>Select Purchase Request G</option>
                   {purchase.map((pr) => <option key={pr.id} value={pr.id}>{pr.name}</option>)}
                  
                 </Select>
@@ -539,6 +548,9 @@ const PaymentList = () => {
                         <EditIcon className="h-5 w-5 text-blue-600" />
                       </Button>
                     </Link>
+                      <Button layout="link" size="small" onClick={() => openDelete(row.id)}>
+                      <TrashIcon className="h-5 w-5 text-red-600" />
+                    </Button>
                    
                   </TableCell>
                 </TableRow>

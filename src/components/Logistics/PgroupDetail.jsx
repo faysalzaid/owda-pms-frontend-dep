@@ -15,7 +15,7 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
 import 'config/custom-button.css'
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
-
+import { FaFilePdf, FaFileExcel, FaFileWord, FaDownload } from 'react-icons/fa'; // You can import other icons as needed
 import {
   TableBody,
   TableContainer,
@@ -52,6 +52,7 @@ const PurchaseGroupDetail = (props) => {
   const {authState,settings} = useContext(AuthContext)
   const [searchResult, setSearchResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [Attachment, setAttachment] = useState([])
   const [fetchedResult, setFetchedResult] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [donors,setDonors] = useState([])
@@ -69,9 +70,11 @@ const PurchaseGroupDetail = (props) => {
     requestedBy:"",
     owdaDonorId:"",
     date:"",
-    requestingProgram:""
+    requestingProgram:"",
+    type:""
 
   });
+  
 
   const {id} = useParams()
 
@@ -111,7 +114,7 @@ const PurchaseGroupDetail = (props) => {
     const getData = async () => {
 
       await axios.get(`${url}/pGroup/${id}`, { withCredentials: true }).then((resp) => {
-        console.log('item',resp.data);
+        // console.log('item',resp?.data?.owda_service_attachments);
         if (resp.data.error) return setOpenError({ open: true, message: 'Error Occured' });
         setSelectedItems(resp.data?.purchase_requests?.map((pr)=>{
             return pr.id
@@ -121,10 +124,12 @@ const PurchaseGroupDetail = (props) => {
             requestedBy:resp.data.requestedBy,
             owdaDonorId:resp.data.owdaDonorId,
             date:resp.data.date,
-            requestingProgram:resp.data.requestingProgram
+            requestingProgram:resp.data.requestingProgram,
+            type:resp.data.type
         
           })
         setPgroup(resp.data);
+        setAttachment(resp?.data?.owda_service_attachments)
       }).catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
           setOpenError({ open: true, message: `${error.response.data.error}` });
@@ -186,7 +191,7 @@ const PurchaseGroupDetail = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your logic to handle form submission and API call
+    // Add your ic to handle form submission and API call
   };
 
   useEffect(() => {
@@ -238,6 +243,9 @@ const PurchaseGroupDetail = (props) => {
 
   const handleSend = async (e) => {
     e.preventDefault()
+    if(itemForm.type==="none"||itemForm.type==="") return setOpenError({open:true,message:"Please Select type product or service"})
+    if(itemForm.owdaDonorId==="Select Donor"||itemForm.owdaDonorId==="") return setOpenError({open:true,message:"Please Select Donor"})
+    if(selectedItems.length<1) return setOpenError({open:true,message:"Please select atleast one item"})
     const request={
       ...itemForm,
       selectedItems
@@ -272,6 +280,34 @@ const PurchaseGroupDetail = (props) => {
   };
 
 
+
+  // attachment Creation section
+  const [showModal, setShowModal] = useState(false);
+
+
+  const closeShowModal =()=>{
+    setShowModal(false)
+  }
+
+  const [attachmentForm,setAttachmentForm] = useState({name:"",attach:""})
+
+  const handleCreateAttachment = async(e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('name',attachmentForm.name)
+    formData.append('attach',attachmentForm.attach)
+    formData.append('purchaseRequestGroupId',id)
+    // console.log('Attachment created:', formData);
+    await axios.post(`${url}/serviceAttach`,formData,{withCredentials:true}).then((resp)=>{
+      if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
+      setAttachment([resp.data,...Attachment])
+      setOpenSuccess({open:true,message:"Successfully added attachment"})
+    })
+    // Close the modal
+    setShowModal(false);
+  };
+
+  // end of attachment creation section
 
   return (
     <>
@@ -358,8 +394,8 @@ const PurchaseGroupDetail = (props) => {
 
         <CNavbar />
 
-        <Button onClick={openModal} className="mt-4 custom-button">Update Group</Button>
       </TableContainer>
+        <Button onClick={openModal} className="mt-4 custom-button">Update Group</Button>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalHeader>Update Group</ModalHeader>
@@ -383,6 +419,22 @@ const PurchaseGroupDetail = (props) => {
               </Label>
 
 
+              <Label>
+                <span>Select Type</span>
+                <Select
+                  className="mt-1"
+                  name="type"
+                  value={itemForm.type}
+                  onChange={(e) => setitemForm({ ...itemForm, type: e.target.value })}
+                  required
+                >
+                  <option value="none">Select Type</option>
+                  <option value="product">Product</option>
+                  <option value="service">Service</option>
+                  
+                 
+                </Select>
+              </Label>
               <Label>
                 <span>Date</span>
                 <Input
@@ -463,7 +515,7 @@ const PurchaseGroupDetail = (props) => {
             </div>
 
             <div className="hidden sm:block">
-              <Button className="mt-6" type="submit custom-button">Submit</Button>
+              <Button className="mt-6 custom-button" type="submit ">Submit</Button>
             </div>
             <div className="mt-2 block sm:hidden custom-button">
               <Button block size="large" className="custom-button">
@@ -705,6 +757,79 @@ const PurchaseGroupDetail = (props) => {
           )):<p>No Quotations Submitted</p>}
         </div>
 
+
+
+        <div className="mt-4">
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-300"><Badge type="primary">Attachment Details</Badge></h2>
+        <button
+        onClick={() => setShowModal(true)}
+        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-green-600 custom-button"
+      >
+        Create Attachment
+      </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {Attachment.map((file, index) => (
+            <div
+              key={index}
+              className='p-4 rounded-lg border '
+            >
+              <div className="flex items-center space-x-2">
+                <FaFilePdf size={24} className="text-gray-800 dark:text-gray-100"/>
+                <p
+                 className='p-4 text-gray-800 dark:text-gray-100 flex'
+                >
+                  {file.name} 
+                  <a href={`${file.attach}`}><FaDownload className='ml-4 mt-1'/></a>
+                </p>
+              </div>
+              <p   className=' text-gray-800 dark:text-gray-100 text-xs mt-2' >
+                {file.date}
+              </p>
+            </div>
+          ))}
+        </div>
+</div>
+
+{/* attachment modal */}
+<Modal isOpen={showModal} onClose={closeShowModal}>
+          <ModalHeader>Create Attachment</ModalHeader>
+          <ModalBody>
+          <form onSubmit={handleCreateAttachment} encType='multipart/form-data'>
+              <div className="grid grid-cols-1 gap-4">
+
+              <Label>
+              <span>Name</span>
+              <Input
+         
+                className="mt-1"
+                name="name"
+                autoComplete="off"
+                onChange={(e)=>setAttachmentForm({...attachmentForm,name:e.target.value})}
+                required
+              />
+            </Label>
+            <Label>
+              <span>Attach</span>
+              <Input
+                type="file"
+                className="mt-1"
+                step="0.01"
+                name="name"
+                autoComplete="off"
+                onChange={(e)=>setAttachmentForm({...attachmentForm,attach:e.target.files[0]})}
+                required
+              />
+            </Label>
+              </div>
+            <button className="mt-4 px-4 py-2 text-white custom-button rounded-md hover:bg-purple-600" type="submit">
+              Confirm
+            </button>
+            </form>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+      </Modal>
+{/* end of attachment modal */}
 
 
 

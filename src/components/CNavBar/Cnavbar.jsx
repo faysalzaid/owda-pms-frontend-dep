@@ -68,7 +68,7 @@ class CNavbar extends React.Component {
                         currentURL === `${link.to}` ? 'p-2  text-green-600 bg-green-100 dark:bg-green-900 rounded-md  border-green-500' : ''
                       }`}
                   >
-                    <link.icon className="ml-1" />
+                    <link.icon className="ml-1 text-sm" />
                     <span className='font-semibold active '>{link.label}</span>
                   </Link>
                 </li>

@@ -70,6 +70,7 @@ const OwdaBudgetLinesDetail = () => {
         totalAmount:"", 
         owdaProjectId:"", 
         owdaUnitTypeId:"", 
+        belowPercentage:""
 
     })
 
@@ -135,6 +136,7 @@ const OwdaBudgetLinesDetail = () => {
            
 
             await axios.get(`${url}/budgetLines/${id}`,{withCredentials:true}).then((resp)=>{
+           
                 setBudgetLines(resp.data)
                 setBudgetLineForm({
                     name:resp.data.name, 
@@ -146,9 +148,10 @@ const OwdaBudgetLinesDetail = () => {
                     totalAmount:resp.data.totalAmount, 
                     owdaProjectId:resp.data.owdaProjectId, 
                     owdaUnitTypeId:resp.data.owdaUnitTypeId, 
+                    belowPercentage:resp.data.belowPercentage,
                 })
 
-                // console.log(resp.data);
+           
              
             }).catch((error)=>{
                 if (error.response && error.response.data && error.response.data.error) {
@@ -447,7 +450,17 @@ const openCorrection = (id)=>{
             />
           </Label>
          
-
+          <Label>
+            <span>Allowance</span>
+            <Input
+              type="number"
+              className="mt-1"
+              value={budgetLineForm.belowPercentage?budgetLineForm.belowPercentage:0}
+              name="duration"
+              onChange={(e)=>setBudgetLineForm({...budgetLineForm,belowPercentage:e.target.value})}
+              required
+            />
+          </Label>
 
           <Label>
             <span>Unit Type</span>

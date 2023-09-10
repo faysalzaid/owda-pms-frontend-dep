@@ -1,5 +1,8 @@
 .custom-button {
     background-color: #048b2b;
+    font-size: 12px;
+    /* Adjust the font size to your preference */
+    padding: 5px 10px
     /* Replace with any desired green color code */
     /* Add any other styles you want to apply to the button */
 }

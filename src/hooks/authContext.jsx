@@ -96,16 +96,14 @@ useEffect(()=>{
             
             };
             const stringFied = JSON.stringify(usersData);
-            localStorage.setItem('User', stringFied);
             setAuthState({ id: data?.id, username: data?.name, email: data?.email, image: data?.image, role: data?.role, state: true });
-            // console.log('updated the token');
-            // console.log('sent the refresh success');
-            // return console.log(token); // Return the token
+            localStorage.setItem('User', stringFied);
+            console.log('called authcontext');
+  
         } catch (error) {
-            // console.error('Error from the grapauth', error);
             setAuthState({ id: '', username: '', email: '', image: '', role: '', state: false });
-            props.history.push('/login') // Rethrow the error to be caught by the interceptor
-
+            localStorage.setItem('User', "");
+            props.history.push('/login')
         }
         },1*60*1000); // 5 minutes (in milliseconds)
     

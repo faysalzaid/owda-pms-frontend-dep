@@ -53,7 +53,6 @@ const PurchaseGroup = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [donors,setDonors] = useState([])
   const [purchase,setPurchase] = useState([])
-  const [suppliers,setSuppliers] = useState([])
   const [countsData, setCountsData] = useState({
     projectCount: '',
     bidCount: '',
@@ -66,7 +65,8 @@ const PurchaseGroup = () => {
     requestedBy:"",
     owdaDonorId:"",
     date:"",
-    requestingProgram:""
+    requestingProgram:"",
+    type:"",
 
   });
 
@@ -106,7 +106,7 @@ const PurchaseGroup = () => {
     const getData = async () => {
 
       await axios.get(`${url}/pGroup`, { withCredentials: true }).then((resp) => {
-        // console.log('item',resp.data);
+        console.log('item',resp.data);
         if (resp.data.error) return setOpenError({ open: true, message: 'Error Occured' });
         setPgroup(resp.data);
       }).catch((error) => {
@@ -219,6 +219,9 @@ const PurchaseGroup = () => {
 
   const handleSend = async (e) => {
     e.preventDefault()
+    if(itemForm.type==="none"||itemForm.type==="") return setOpenError({open:true,message:"Please Select type product or service"})
+    if(itemForm.owdaDonorId==="Select Donor"||itemForm.owdaDonorId==="") return setOpenError({open:true,message:"Please Select Donor"})
+    if(selectedItems.length<1) return setOpenError({open:true,message:"Please select atleast one item"})
     const request={
       ...itemForm,
       selectedItems
@@ -256,7 +259,7 @@ const PurchaseGroup = () => {
 
   return (
     <>
-      <PageTitle>Item List</PageTitle>
+      <PageTitle>Purchase Group List</PageTitle>
       <TitleChange name={`${settings.name} | Dashboard`}/><ErrorAlert
         open={openError.open}
         handleClose={handleCloseError}
@@ -358,6 +361,23 @@ const PurchaseGroup = () => {
                 >
                   <option>Select Donor</option>
                   {donors.map((pr)=><option key={pr.id} value={pr.id}>{pr.name}</option>)}
+                 
+                </Select>
+              </Label>
+
+
+              <Label>
+                <span>Select Type</span>
+                <Select
+                  className="mt-1"
+                  name="type"
+                  onChange={(e) => setitemForm({ ...itemForm, type: e.target.value })}
+                  required
+                >
+                  <option value="none">Select Type</option>
+                  <option value="product">Product</option>
+                  <option value="service">Service</option>
+                  
                  
                 </Select>
               </Label>

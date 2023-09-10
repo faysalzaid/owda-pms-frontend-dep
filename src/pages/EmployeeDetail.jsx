@@ -48,7 +48,7 @@ function EmployeeDetail(props) {
     const [agreementFile,setAgreementFile] = useState({file:"",status:false,id:""})
     const [generalSettings,setGeneralSettings] = useState({status:true})
     const [timesheet,setTimesheet] = useState({status:false,id:""})
-    const {settings} = useAuth()
+    const {settings,authState} = useAuth()
   
 
 
@@ -91,7 +91,8 @@ function EmployeeDetail(props) {
           baseSalary:0,
           duration:0,
           currentSalary:0,
-          pCategory:""
+          pCategory:"",
+          lastPayment:""
         
         })
     
@@ -110,7 +111,7 @@ function EmployeeDetail(props) {
         let isMounted = true
         if(isMounted){
           await axios.get(`${url}/employees/${id}`,{withCredentials:true}).then((resp)=>{
-            // console.log('Employees',resp.data);
+            console.log('Employees',resp.data);
             if(resp.data.error){
               setOpenError({open:true, message:`${resp.data.error}`})
             }else{
@@ -209,7 +210,8 @@ function EmployeeDetail(props) {
         formData.append('baseSalary',emplForm.baseSalary)
         formData.append('duration',emplForm.duration)
         formData.append('pCategory',emplForm.pCategory)
-        // console.log(formData);
+        formData.append('lastPayment',emplForm.lastPayment)
+        console.log('The new formdata',formData);
          await axios.post(`${url}/employees/${id}`,formData,{withCredentials:true}).then((resp)=>{
           // console.log('from server',resp.data);
           if(resp.data.error){
@@ -667,6 +669,11 @@ function EmployeeDetail(props) {
           <Label>
             <span>Base Salary (ETB) <span className='text-1xl font-bold text-red-500'>*</span>  </span>
               <Input type="text" className="mt-1" name="postCode" placeholder="Empl Postcode"  autoComplete='off' value={emplForm.baseSalary} onChange={(e)=>setEmplForm({...emplForm,baseSalary:e.target.value})}/>
+          </Label>
+
+          <Label>
+            <span>Last Payment</span>
+              <Input type="date" className="mt-1" name="lastPayment" placeholder="Empl Postcode"  autoComplete='off' value={emplForm.lastPayment} onChange={(e)=>setEmplForm({...emplForm,lastPayment:e.target.value})} disabled={authState.role==='admin'?false:true}/>
           </Label>
 
 

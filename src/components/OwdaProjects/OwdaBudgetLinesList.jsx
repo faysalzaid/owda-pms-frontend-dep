@@ -72,7 +72,8 @@ const OwdaBudgetLinesList = () => {
         totalAmount:"", 
         owdaProjectId:"", 
         owdaUnitTypeId:"", 
-        owdaBudgetLineCategoryId:""
+        owdaBudgetLineCategoryId:"",
+        belowPercentage:""
 
     })
 
@@ -435,6 +436,8 @@ const OwdaBudgetLinesList = () => {
               required
             />
           </Label>
+
+        
          
 
 
@@ -453,6 +456,17 @@ const OwdaBudgetLinesList = () => {
               ))}
               
             </Select>
+          </Label>
+
+          <Label>
+            <span>Allowance</span>
+            <Input
+              type="number"
+              className="mt-1"
+              name="duration"
+              onChange={(e)=>setBudgetLineForm({...budgetLineForm,belowPercentage:e.target.value})}
+              required
+            />
           </Label>
 
         

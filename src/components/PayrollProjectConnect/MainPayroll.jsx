@@ -57,6 +57,7 @@ const OwdaMainPayroll = () => {
     const [countsData,setCountsData] = useState({ projectCount:"",bidCount:"",activeProjects:"",completedProjects:""})
     const [project,setProject] = useState([])
     const [activity,setActivity] = useState([])
+    const [addedNumber,setAddedNumber] = useState(0)
     const [projectBased,setProjectBased] = useState([])
     const [contributors,setContributors] = useState([])
     const [budgetLines,setBudgetLines] = useState([])
@@ -113,6 +114,7 @@ const OwdaMainPayroll = () => {
 
     // Open onetimemodal
       const [isOneTimeOpen,setIsOneTimeOpen] =useState(false)
+      const [isSelectionOpen,setIsSelectionOpen] =useState(false)
       function closeOneTime(){
         setIsOneTimeOpen(false)
     }
@@ -120,6 +122,14 @@ const OwdaMainPayroll = () => {
         setIsOneTimeOpen(true)
         setPayrollForm({...payrollForm ,owdaBudgetLineId:empl.owdaBudgetLineId,id:empl.id,unitPrice:empl.baseSalary,ProjectId:clickables.ProjectId,pCategory:empl.pCategory})
     }
+
+    function openOneTimeWithSelection(empl){
+      setIsSelectionOpen(true)
+      setPayrollForm({...payrollForm ,owdaBudgetLineId:empl.owdaBudgetLineId,id:empl.id,unitPrice:empl.baseSalary,ProjectId:clickables.ProjectId,pCategory:empl.pCategory})
+  }
+  function closeOneTimeWithSelection(empl){
+    setIsSelectionOpen(false)
+}
 
     // end of endtimemodal
 
@@ -204,30 +214,39 @@ const OwdaMainPayroll = () => {
 
       
     
-      // const handleSubmit = async(e) => {
-      //   e.preventDefault()
-      //   // console.log(payrollForm);
-      //   await axios.post(`${url}/activity`,payrollForm,{withCredentials:true}).then((resp)=>{
-      //     console.log(resp.data);
-      //     if(resp.data.error){
-      //       setOpenError({open:true,message:`${resp.data.error}`})
-      //     }else{
-      //       console.log(resp.data);
-      //       setActivity((prev)=>[...prev,resp.data])
-      //       setOpenSuccess({open:true,message:"Successfully Added"})
-      //       closeModal();   
-      //     }
+            
+    
+    const handleSelectedBaserPayroll = async(e) => {
+      e.preventDefault();
+      // console.log('payroll form',payrollForm);
+      const request = {
+        payrollForm,
+        selectedProjectBased
+      }
+      await axios.post(`${url}/activity/payroll/baser/selected`,request,{withCredentials:true}).then((resp)=>{
+        // console.log(resp.data);
+        if(resp.data.error){
+          setOpenError({open:true,message:`${resp.data.error}`})
+        }else{ 
+          // const data = resp.data.filter((dt)=>)
+          // onsole.log(resp.data);
+          setProjectBased(resp.data.Employees?.filter((emp)=>emp.pCategory==="baser"))
+          setContributors(resp.data.Employees?.filter((emp)=>emp.pCategory==="contributor"))
+          setBudgetLines(resp.data.owda_budget_lines)
+          setOpenSuccess({open:true,message:"Successfully Added"})
+          closeOneTimeWithSelection();   
+        }
 
-      //   }).catch((error)=>{
-      //       if (error.response && error.response.data && error.response.data.error) {
-      //           setOpenError({open:true,message:`${error.response.data.error}`});
-      //         } else {
-      //           setOpenError({open:true,message:"An unknown error occurred"});
-      //         }
-      //   })
+      }).catch((error)=>{
+          if (error.response && error.response.data && error.response.data.error) {
+              setOpenError({open:true,message:`${error.response.data.error}`});
+            } else {
+              setOpenError({open:true,message:"An unknown error occurred"});
+            }
+      })
 
-       
-      // };
+     
+    };
 
 
 
@@ -389,11 +408,30 @@ const closeContributor = ()=>{
       }
 
 
-  
+      const [selectedProjectBased, setSelectedProjectBased] = useState([]);
+
+      const toggleSelect = (employee) => {
+        // Check if the employee is already selected, and toggle their selection
+        if (selectedProjectBased.includes(employee)) {
+          setSelectedProjectBased(selectedProjectBased.filter((e) => e !== employee));
+        } else {
+          setSelectedProjectBased([...selectedProjectBased, employee]);
+        }
+
+     
+      };
+
+
+      useEffect(()=>{
+        console.log(selectedProjectBased);
+        const data = selectedProjectBased?.reduce((acc,curr)=>acc+parseFloat(curr.baseSalary),0).toLocaleString({maximumFractionDigits:2})
+        setAddedNumber(data)
+      },[selectedProjectBased])
+
     return (
       <>
   
-        <PageTitle>Main payroll Page</PageTitle>
+        <PageTitle>Main payroll Page </PageTitle>
         <TitleChange name={`${settings.name} | Dashboard`}/><ErrorAlert
         open={openError.open}
         handleClose={handleCloseError}
@@ -491,14 +529,162 @@ const closeContributor = ()=>{
             </div>
 
 
-       
         </div>
         </div>
+        {selectedProjectBased.length>0?
+        <Button className="custom-button mb-4" size="small" onClick={openOneTimeWithSelection}>Pay</Button>
+        :""}
   
         
         </TableContainer>
 
 
+
+          {/* start of selected projects payroll */}
+          <Modal isOpen={isSelectionOpen} onClose={closeOneTimeWithSelection}>
+      <ModalHeader>Register Payroll of {selectedProjectBased?.length} employees & {addedNumber}-ETB of Salary</ModalHeader>
+      <ModalBody>
+      <form onSubmit={handleSelectedBaserPayroll}>
+        <div className="grid grid-cols-2 gap-4">
+          
+        <Label>
+            <span>Date</span>
+            <Input
+              type="date"
+              className="mt-1"
+              name="date"
+              onChange={(e)=>setPayrollForm({...payrollForm,date:e.target.value})}
+              required
+            />
+          </Label>
+
+          <Label>
+            <span>Site</span>
+            <Select
+              className="mt-1"
+              name="owdaSiteId"
+            //   value={formValues.CompanyId}
+              onChange={(e)=>setPayrollForm({...payrollForm,owdaSiteId:e.target.value})}
+              required
+            >
+              <option value="" >Select Site</option>
+              {siteData?.map((cp,i)=>(
+                <option key={i} value={cp.id}>{cp.name}</option>
+              ))}
+              
+            </Select>
+          </Label>
+
+
+          <Label>
+            <span>Description</span>
+            <Input
+            //   type="number"
+              className="mt-1"
+              name="description"
+              onChange={(e)=>setPayrollForm({...payrollForm,description:e.target.value})}
+              required
+            />
+          </Label>
+
+          <Label>
+            <span>Unit</span>
+            <Input
+            //   type="number"
+              className="mt-1"
+              name="unit"
+              onChange={(e)=>setPayrollForm({...payrollForm,unit:e.target.value})}
+              required
+            />
+          </Label>
+
+          <Label>
+            <span>Check Number</span>
+            <Input
+            //   type="number"
+              className="mt-1"
+              name="unit"
+              onChange={(e)=>setPayrollForm({...payrollForm,checkNumber:e.target.value})}
+              required
+            />
+          </Label>
+
+          <Label>
+            <span>Payment Voucher</span>
+            <Input
+            //   type="number"
+              className="mt-1"
+              name="unit"
+              onChange={(e)=>setPayrollForm({...payrollForm,paymentVoucher:e.target.value})}
+              required
+            />
+          </Label>
+
+
+          <Label>
+            <span>Quantity</span>
+            <Input
+              type="number"
+              step="0.01"
+              className="mt-1"
+              name="quantity"
+              onChange={(e)=>setPayrollForm({...payrollForm,quantity:e.target.value})}
+              required
+            />
+          </Label>
+
+
+         
+
+          <Label>
+            <span>USD Unit Rate</span>
+            <Input
+              type="number"
+              step='0.01'
+              className="mt-1"
+              name="duration"
+              onChange={(e)=>setPayrollForm({...payrollForm,usdUnitRate:e.target.value})}
+              required
+            />
+          </Label>
+         
+
+
+
+        </div>
+        <div className="hidden sm:block">
+
+         <Button className="mt-6 custom-button" type="submit">Submit</Button>
+        </div>
+           <div className=" mt-2 block  sm:hidden">
+<Button block size="large" type="submit" className="custom-button">
+              Accept
+            </Button>
+          </div>
+      
+        </form>
+      </ModalBody>
+      <ModalFooter>
+      <div className="hidden sm:block">
+            <Button layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+        </div>
+        <div className="block w-full sm:hidden">
+            <Button block size="large" layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+
+          {/* <div className="block w-full sm:hidden">
+<Button block size="large" type="submit" className="custom-button">
+              Accept
+            </Button>
+          </div> */}
+      </ModalFooter>
+    </Modal>
+
+          {/* end of selected projects payroll */}
 
           {/* ONetime payroll  */}
           <Modal isOpen={isOneTimeOpen} onClose={closeOneTime}>
@@ -679,6 +865,7 @@ const closeContributor = ()=>{
         <TableCell className="font-semibold">Duration</TableCell>
         <TableCell className="font-semibold">Current Salary</TableCell>
         <TableCell className="font-semibold">Last Payment</TableCell>
+        <TableCell className="font-semibold">Select</TableCell>
         <TableCell className="font-semibold text-center">Actions</TableCell>
       </TableRow>
     </TableHeader>
@@ -694,6 +881,13 @@ const closeContributor = ()=>{
               <TableCell><span className="text-sm font-semibold">{row.duration} Months</span></TableCell>
               <TableCell><span className="text-sm font-semibold">{parseFloat(row.currentSalary).toLocaleString({ maximumFractionDigits: 2 })} ETB</span></TableCell>
               <TableCell><span className="text-sm font-semibold">{row.lastPayment?.slice(0,10)}</span></TableCell>
+              <TableCell> <input
+                      type="checkbox"
+      
+                      onChange={() => toggleSelect(row)}
+                      checked={selectedProjectBased.includes(row)}
+                      disabled={!isMonthReached(row)}
+                    /></TableCell>
               <TableCell className="flex justify-center space-x-0">
                 <Button layout="link" size="small"  onClick={()=>openOneTime(row)}  disabled={!isMonthReached(row)}>
                   <FaSave className={`${isMonthReached(row)?"h-5 w-5 text-red-600":"h-5 w-5 text-green-600"}`} />
@@ -738,6 +932,7 @@ const closeContributor = ()=>{
         <TableCell className="font-semibold">Last Payment</TableCell>
         <TableCell className="font-semibold">Month</TableCell>
          <TableCell className="font-semibold">Pay</TableCell>
+    
         <TableCell className="font-semibold text-center">Actions</TableCell>
       </TableRow>
     </TableHeader>

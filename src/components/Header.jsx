@@ -177,7 +177,6 @@ function Header(props) {
             </button>
           </li>
           {/* <!-- Notifications menu --> */}
-          <Link to={'/'}><Button size="small" className="mt-1 font-bold custom-button" iconLeft={FiEye}>View Site</Button></Link>
           <li className="relative">
             <button
               className="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
