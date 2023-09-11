@@ -15,21 +15,7 @@
 
 
 
-// // const { authState } = useAuth(
-// const useCheckPermission = () => {
-//     const { authState } = useAuth()
-//     if (authState.role === "admin") {
-//         return secret = "admin"
-//     } else if (authState.role === "planning") {
-//         return secret = "planning"
-//     } else if (authState.role === "finance") {
-//         return secret = "finance"
-//     } else if (authState.role === "engineer") {
-//         return secret = "engineer"
-//     }
-// }
 
-// useCheckPermission()
 
 let routes;
 
@@ -190,6 +176,7 @@ routes = [{
     {
         name: 'Finance',
         icon: 'FaRegMoneyBillAlt',
+        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'finance_admin'],
         routes: [
             // submenu
             {

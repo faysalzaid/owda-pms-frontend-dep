@@ -267,6 +267,9 @@ const SupplierDetail = lazy(() =>
 const ProjectReport = lazy(() =>
     import ('../components/Reports/ProjectReport'))
 
+const ProfilePage = lazy(() =>
+    import ("../components/Profile/Profile"));
+
 // End of Owda Routes
 /**
  * ⚠ These are internal routes!
@@ -386,6 +389,13 @@ const routes = [{
     //     component: ContractDetail,
     //     roles: ['admin', 'general_admin', 'executive_director', 'finance', 'contractadmin']
     // },
+
+    {
+        path: "/profile",
+        component: ProfilePage,
+        roles: ['admin', 'general_admin', 'executive_director', 'finance_admin', 'design', 'client', 'logistic_admin', 'hr']
+
+    },
 
 
     {
