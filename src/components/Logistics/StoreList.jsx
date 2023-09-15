@@ -70,6 +70,16 @@ const StoreList = () => {
     location: '',
     receivedBy: '',
   });
+  const [storeRequisitionForm,setStoreRequisitionForm] = useState({
+    date:"",
+    purpose:"",
+    requestedBy:"",
+    checkedBy:"",
+    approvedBy:"",
+    owdaStoreId:"",
+    quantity:"",
+    unit:""
+  })
 
   // Notifications
   const [openSuccess, setOpenSuccess] = useState({ open: false, message: '' });
@@ -103,6 +113,20 @@ const StoreList = () => {
   function openModal() {
     setIsOpen(true);
   }
+
+  
+  const [isStoreROpen,setIsStoreROpen] = useState(false)
+
+    function closeStoreR() {
+      setIsStoreROpen(false);
+    }
+  
+    function openStoreR() {
+      setIsStoreROpen(true);
+    }
+
+
+
 
 
   function openToStore(id){
@@ -227,6 +251,7 @@ const StoreList = () => {
 
   const handleSend = async (e) => {
     e.preventDefault()
+    if(storeRequisitionForm.owdaStoreId===""||storeRequisitionForm.owdaStoreId===undefined) return setOpenError({open:true,message:"Please provide store item"})
     console.log(storeForm);
     if (storeForm.purchaseRequestId === "" || storeForm.purchaseRequestId === "Select Purchase Request") return setOpenError({ open: true, message: "Please Provide Purchase Request" })
     await axios.post(`${url}/store`, storeForm, { withCredentials: true }).then((resp) => {
@@ -244,6 +269,19 @@ const StoreList = () => {
     // Add your logic to handle sending store and API call
   }
 
+
+  const handleStoreR =async(e)=>{
+      e.preventDefault()
+      // console.log(storeRequisitionForm);
+      await axios.post(`${url}/storeR`,storeRequisitionForm,{withCredentials:true}).then((resp)=>{
+        if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
+        setStore(resp.data)
+        console.log('newdata',resp.data);
+        setOpenSuccess({open:true,message:"Successfully Created data"})
+        closeStoreR()
+
+      })
+  }
 
 
   return (
@@ -280,6 +318,7 @@ const StoreList = () => {
 
       <TableContainer>
         {/* Delete Confirm section */}
+ 
         <Modal isOpen={isDeleteOpen.open} onClose={closeDelete}>
           <ModalHeader>Confirm Action</ModalHeader>
           <ModalBody>
@@ -368,9 +407,106 @@ const StoreList = () => {
         </Modal>
         {/* End of To store model */}
 
+        {/* START OF STORE REQUISITION STORE FORM */}
 
 
-        <Button color="success" onClick={openToStore} className="mt-4 ml-4 bg-blue-500 hover:bg-blue-600 custom-button"><FaPlusCircle/></Button>
+        <Modal isOpen={isStoreROpen} onClose={closeStoreR}>
+          <ModalHeader>Store Requisition Form</ModalHeader>
+          <ModalBody>
+          <form onSubmit={handleStoreR} className="border border-gray-300 rounded-lg p-6">
+      <div className="flex flex-wrap mb-6">
+        <Label className="w-full sm:w-1/2">
+          <span>Date</span>
+          <Input
+            type="date"
+            className="mt-1"
+            name="date"
+            onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, date: e.target.value })}
+            required
+          />
+        </Label>
+
+        <Label className="w-full sm:w-1/2">
+          <span>Requested By</span>
+          <Input
+            // type="number"
+            className="mt-1 ml-1"
+            name="requestedBy"
+            onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, requestedBy: e.target.value })}
+            required
+          />
+        </Label>
+        <Label className="w-full sm:w-1/2">
+          <span>Quantity</span>
+          <Input
+            type="number"
+            className="mt-1 ml-1"
+            name="requestedBy"
+            onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, quantity: e.target.value })}
+            required
+          />
+        </Label>
+        <Label className="w-full sm:w-1/2">
+          <span>Unit</span>
+          <Input
+            // type="number"
+            className="mt-1 ml-1"
+            name="requestedBy"
+            onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, unit: e.target.value })}
+            required
+          />
+        </Label>
+        <Label className="w-full">
+          <span>Purpose</span>
+          <Textarea
+            className="mt-1"
+            name="purpose"
+            onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, purpose: e.target.value })}
+          />
+        </Label>
+        <Label className="w-full sm:w-1/1">
+            <span>Item</span>
+            <Select
+              className="mt-1"
+              name="store"
+              onChange={(e) => setStoreRequisitionForm({ ...storeRequisitionForm, owdaStoreId: e.target.value })}
+
+              required
+            >
+              <option value="" >Select Item</option>
+              {store?.map((cp,i)=>(
+                <option key={i} value={cp.id}>{cp.name}</option>
+              ))}
+              
+            </Select>
+          </Label>
+
+      
+      </div>
+
+      <div className="hidden sm:block border border-gray-300 rounded-lg p-4 mb-6">
+        <Button className="custom-button" type="submit">
+          Submit
+        </Button>
+      </div>
+      <div className="block sm:hidden border border-gray-300 rounded-lg p-4 mt-2">
+        <Button block size="large" type="submit">
+          Accept
+        </Button>
+      </div>
+    </form>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </Modal>
+
+
+        {/* END OF STORE REQUISITION STORE FROM */}
+
+
+
+        <Button color="success" onClick={openToStore} className="mt-1 ml-4 bg-blue-500 hover:bg-blue-600 custom-button"><FaPlusCircle/>add</Button>
+        <Button className="mt-1 ml-4 bg-blue-500 hover:bg-blue-600 custom-button" onClick={openStoreR}>Store Requisition Form <Link to='/app/storerequisition'><Badge className="ml-2 font-bold" style={{background:"green",color:"white"}}>view</Badge></Link></Button>
       </TableContainer>
      
 

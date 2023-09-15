@@ -261,6 +261,9 @@ const PaymentRequestList = lazy(() =>
 const PaymenetRequestDetail = lazy(() =>
     import ('../components/Logistics/paymentRequestDetail'))
 
+const StoreRequisitionList = lazy(() =>
+    import ('../components/Logistics/storeRequistionList'))
+
 const SupplierDetail = lazy(() =>
     import ('../components/Logistics/SupplierDetail'))
 
@@ -703,6 +706,12 @@ const routes = [{
     {
         path: "/projectReport",
         component: ProjectReport,
+        roles: ['admin', 'general_admin', 'executive_director', 'finance_admin', 'logistic_admin', 'hr']
+    },
+
+    {
+        path: "/storeRequisition",
+        component: StoreRequisitionList,
         roles: ['admin', 'general_admin', 'executive_director', 'finance_admin', 'logistic_admin', 'hr']
     },
 

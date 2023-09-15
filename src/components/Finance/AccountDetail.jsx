@@ -121,8 +121,7 @@ const AccountDetail = () => {
                 if(resp.data.error){
                     setOpenError({open:true,message:`${resp.data.error}`})
                   }else{
-                    // console.log(resp.data);
-                    // console.log(resp.data);
+                    console.log(resp.data);
                     setAccount(resp.data)
                     setAccountForm({
                         name:resp.data.name,

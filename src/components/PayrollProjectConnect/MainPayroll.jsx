@@ -881,13 +881,17 @@ const closeContributor = ()=>{
               <TableCell><span className="text-sm font-semibold">{row.duration} Months</span></TableCell>
               <TableCell><span className="text-sm font-semibold">{parseFloat(row.currentSalary).toLocaleString({ maximumFractionDigits: 2 })} ETB</span></TableCell>
               <TableCell><span className="text-sm font-semibold">{row.lastPayment?.slice(0,10)}</span></TableCell>
-              <TableCell> <input
+
+                        <TableCell> 
+                      <input
                       type="checkbox"
       
                       onChange={() => toggleSelect(row)}
                       checked={selectedProjectBased.includes(row)}
                       disabled={!isMonthReached(row)}
-                    /></TableCell>
+                    />
+              </TableCell>
+              
               <TableCell className="flex justify-center space-x-0">
                 <Button layout="link" size="small"  onClick={()=>openOneTime(row)}  disabled={!isMonthReached(row)}>
                   <FaSave className={`${isMonthReached(row)?"h-5 w-5 text-red-600":"h-5 w-5 text-green-600"}`} />

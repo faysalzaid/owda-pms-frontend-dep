@@ -309,7 +309,7 @@ const OwdaActivityList = () => {
   // Delete row
   const handleDelete = async()=>{
     await axios.delete(`${url}/activity/${isDeleteOpen.id}`,{withCredentials:true}).then((resp)=>{
-      // console.log(resp.data);
+      console.log(resp.data);
       if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
         const data = activity.filter((dt)=>dt.id!==isDeleteOpen.id)
         setActivity(data)

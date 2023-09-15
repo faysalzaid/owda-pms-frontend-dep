@@ -327,36 +327,36 @@ const deleteCompany =async()=>{
 
                 {/* Profile Detail */}
 
-<div className="bg-gray-50 flex flex-col justify-center py-12 sm:px-9 lg:px-9">
+<div className="bg-gray-50 dark:bg-gray-700 flex flex-col justify-center py-12 sm:px-9 lg:px-9">
   <div className="w-full">
-    <div className="bg-white shadow-md rounded-md overflow-hidden">
+    <div className="bg-white dark:bg-gray-700 shadow-md rounded-md overflow-hidden">
       <div className="px-6 py-8">
         <div className="flex justify-between items-center">
           <div className=" items-center">
             <img src={authState.image} alt="Company Logo" style={{width:200}} className=" mr-2" />
-            <h2 className="text-lg font-medium text-gray-900">Profile Info</h2>
+            <h2 className="text-lg font-medium dark:text-gray-100 text-gray-900">Profile Info</h2>
           </div>
          
         </div>
         <div className="mt-6">
-          <h3 className="text-md font-medium text-gray-900">User Information</h3>
+          <h3 className="text-md font-medium text-gray-900 dark:text-gray-100">User Information</h3>
           <div className="mt-2">
             <div className="flex">
               <p className="text-sm font-medium text-gray-500">UserName:</p>
-              <p className="ml-2 text-sm font-medium text-gray-900">{authState.username}</p>
+              <p className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{authState.username}</p>
             </div>
             <div className="flex mt-2">
               <p className="text-sm font-medium text-gray-500">Email:</p>
-              <p className="ml-2 text-sm font-medium text-gray-900">{authState.email}</p>
+              <p className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{authState.email}</p>
             </div>
           </div>
         </div>
         <div className="mt-6">
-          <h3 className="text-md font-medium text-gray-900">Role Information</h3>
+          <h3 className="text-md font-medium text-gray-900 dark:text-gray-100">Role Information</h3>
           <div className="mt-2">
             <div className="flex">
               <p className="text-sm font-medium text-gray-500">Role Info:</p>
-              <p className="ml-2 text-sm font-medium text-gray-900">{authState.role}</p>
+              <p className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{authState.role}</p>
             </div>
          
           </div>

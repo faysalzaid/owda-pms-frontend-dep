@@ -453,7 +453,7 @@ const OwdaActivityDetail = (props) => {
   <div className="w-full">
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 flex flex-wrap">
       <div className="w-full md:w-1/2 mb-4">
-            <h2 className="text-lg font-semibold mb-4">Activity Details</h2>
+            <h2 className="text-lg font-semibold mb-4">Activity Details | Date: <span className='text-red-700'>{activity.date}</span></h2>
                 <div className="mb-4">
                   <p className="text-sm dark:text-gray-100 font-bold text-gray-600">Activity Description</p>
                   <p className="text-sm font-semibold">{activity.description}</p>
