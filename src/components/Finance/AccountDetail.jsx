@@ -692,6 +692,7 @@ const AccountDetail = () => {
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Description</p>
                   <p  className="text-sm font-semibold text-orange-700 dark:text-yellow-400">{account.description}</p>
                 </div>
+                
       </div>
       <div className="w-full md:w-1/2 mb-4 mt-2">
        

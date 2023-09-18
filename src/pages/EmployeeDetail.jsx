@@ -673,7 +673,7 @@ function EmployeeDetail(props) {
 
           <Label>
             <span>Last Payment</span>
-              <Input type="date" className="mt-1" name="lastPayment" placeholder="Empl Postcode"  autoComplete='off' value={emplForm.lastPayment} onChange={(e)=>setEmplForm({...emplForm,lastPayment:e.target.value})} disabled={authState.role==='admin'?false:true}/>
+              <Input type="date" className="mt-1" name="lastPayment" placeholder="Empl Postcode"  autoComplete='off' value={emplForm.lastPayment} onChange={(e)=>setEmplForm({...emplForm,lastPayment:e.target.value})}/>
           </Label>
 
 
