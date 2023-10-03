@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import PageTitle from '../components/Typography/PageTitle'
 import SectionTitle from '../components/Typography/SectionTitle'
 import axios from 'config/axiosConfig';import TitleChange from "components/Title/Title";
-
+import "config/custom-button.css"
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Table,
@@ -109,22 +109,26 @@ function DesignationDetail(props) {
         <PageTitle>{designationData.name}</PageTitle>
         <p></p>
         <div>
-          <Button onClick={openModal}>Update Designation</Button>
+          <Button onClick={openModal} className="custom-button">Update Designation</Button>
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ModalHeader>Insert Client Info</ModalHeader>
-          <span style={{color:'red'}}>{errorMessage}</span>
           <ModalBody>
             
           <form onSubmit={updateDesignation}>
           <Label>
             <span>Name</span>
-              <Input type="text" className="mt-1" name="name" placeholder="Designation Name" value={desForm.name}  autoComplete='off' onChange={(e)=>setDestForm({...desForm,name:e.target.value})}/>
+              <Input type="text" className="mt-1" name="name" placeholder="Designation Name" value={desForm.name}  autoComplete='off' onChange={(e)=>setDestForm({...desForm,name:e.target.value})} required/>
           </Label>
           
-        <Label className="mt-4">
-          <Button type="submit">Save</Button>
-        </Label>
+          <div className="hidden sm:block">
+            <Button className="mt-6 custom-button" type="submit">Submit</Button>
+            </div>
+              <div className=" mt-2 block  sm:hidden">
+              <Button block size="large" type="submit" className="custom-button">
+                Accept
+              </Button>
+            </div>
           </form>
               
      
@@ -146,19 +150,12 @@ function DesignationDetail(props) {
                 Cancel
               </Button>
             </div>
-            <div className="block w-full sm:hidden">
-              <Button block size="large">
-                Accept
-              </Button>
-            </div>
+
           </ModalFooter>
         </Modal>
   
         <SectionTitle>Table with actions</SectionTitle>
-        {successMessage?
-        <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-        <p className="text-sm">{successMessage}.</p>
-      </div>:''}
+
         <TableContainer className="mb-8">
           <Table>
             <TableHeader>

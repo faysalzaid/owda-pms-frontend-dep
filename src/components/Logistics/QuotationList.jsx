@@ -238,6 +238,8 @@ const QuotationList = () => {
   // Delete row
   const handleDelete = async()=>{
     await axios.delete(`${url}/quotations/${isDeleteOpen.id}`,{withCredentials:true}).then((resp)=>{
+        // console.log('clicked',resp.data.error);
+        if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
         const data = rfqData.filter((dt)=>dt.id!==isDeleteOpen.id)
         setRfqData(data)
         setOpenSuccess({open:true,message:"deleted Successfully"})
@@ -446,6 +448,7 @@ const selectQuotation = async(id)=>{
             <TableCell className="font-semibold">file</TableCell>
             <TableCell className="font-semibold">RequestedBy</TableCell>
             <TableCell className="font-semibold">Supplier</TableCell>
+            <TableCell className="font-semibold">Type</TableCell>
             <TableCell className="font-semibold">Status</TableCell>
             <TableCell className="font-semibold">Select for Order</TableCell>
             <TableCell className="font-semibold text-center">Actions</TableCell>
@@ -462,6 +465,7 @@ const selectQuotation = async(id)=>{
                 <TableCell><span className="text-sm font-semibold"><a href={`${row.file}`} target="_blank"><FaFileDownload className='text-blue-600'/></a></span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row.requestedBy}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row.Supplier?.name}</span></TableCell>
+                <TableCell><span className="text-sm font-semibold">{row.purchase_request_group?.type}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row.status}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold flex">{row.selected?(<><FaCheckCircle className='mt-1 ml-4 text-green-400'/> <span className='ml-4 text-green-400'>Selected</span></>):(<><FaCheckCircle className='mt-1 ml-4 text-red-400'/><span className='ml-4 text-red-400' onClick={()=>selectQuotation(row.id)}><button>Select</button></span></>)}</span></TableCell>
                 <TableCell className="flex justify-center space-x-2">

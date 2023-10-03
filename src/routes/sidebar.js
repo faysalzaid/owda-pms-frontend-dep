@@ -45,12 +45,12 @@ routes = [{
         name: 'Users',
         roles: ['admin', 'general_admin', 'executive_director', 'hr']
     },
-    {
-        path: '/app/charts',
-        icon: 'ChartsIcon',
-        name: 'Charts',
-        roles: ['admin', 'general_admin', 'executive_director', 'finance', 'design', 'finance_admin', 'logistic_admin', 'hr']
-    },
+    // {
+    //     path: '/app/charts',
+    //     icon: 'ChartsIcon',
+    //     name: 'Charts',
+    //     roles: ['admin', 'general_admin', 'executive_director', 'finance', 'design', 'finance_admin', 'logistic_admin', 'hr']
+    // },
 
 
     {

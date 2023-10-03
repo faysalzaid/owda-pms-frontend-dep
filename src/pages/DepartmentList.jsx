@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PageTitle from '../components/Typography/PageTitle'
 import SectionTitle from '../components/Typography/SectionTitle'
 import axios from 'config/axiosConfig';import TitleChange from "components/Title/Title";
-
+import "config/custom-button.css"
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Table,
@@ -94,7 +94,7 @@ function DepartmentList(props) {
         <PageTitle>List of Departments</PageTitle>
         <p></p>
         <div>
-          <Button onClick={openModal}>Register Department</Button>
+          <Button onClick={openModal} className="custom-button">Register Department</Button>
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ModalHeader>Insert Client Info</ModalHeader>
@@ -104,12 +104,18 @@ function DepartmentList(props) {
           <form onSubmit={addDepartment}>
           <Label>
             <span>Name</span>
-              <Input type="text" className="mt-1" name="name" placeholder="Department Name"  autoComplete='off' onChange={(e)=>setDepForm({...depForm,name:e.target.value})}/>
+              <Input type="text" className="mt-1" name="name" placeholder="Department Name"  autoComplete='off' onChange={(e)=>setDepForm({...depForm,name:e.target.value})} required/>
           </Label>
           
-        <Label className="mt-4">
-          <Button type="submit">Save</Button>
-        </Label>
+          <div className="hidden sm:block">
+            <Button className="mt-6 custom-button" type="submit">Submit</Button>
+            </div>
+              <div className=" mt-2 block  sm:hidden">
+              <Button block size="large" type="submit" className="custom-button">
+                Accept
+              </Button>
+            </div>
+
           </form>
               
      
@@ -131,11 +137,7 @@ function DepartmentList(props) {
                 Cancel
               </Button>
             </div>
-            <div className="block w-full sm:hidden">
-              <Button block size="large">
-                Accept
-              </Button>
-            </div>
+
           </ModalFooter>
         </Modal>
   

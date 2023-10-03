@@ -67,10 +67,10 @@ const OwdaBudgetLinesDetail = () => {
         unitCost:"", 
         duration:"", 
         donorCharge:"", 
-        totalAmount:"", 
+        totalAmount:0, 
         owdaProjectId:"", 
         owdaUnitTypeId:"", 
-        belowPercentage:""
+        belowPercentage:"",        
 
     })
 
@@ -196,7 +196,7 @@ const OwdaBudgetLinesDetail = () => {
     
       const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log(budgetLineForm);
+        //console.log(budgetLineForm);
         await axios.put(`${url}/budgetLines/${id}`,budgetLineForm,{withCredentials:true}).then((resp)=>{
           if(resp.data.error){
             setOpenError({open:true,message:`${resp.data.error}`})
@@ -463,6 +463,19 @@ const openCorrection = (id)=>{
           </Label>
 
           <Label>
+            <span>Total Amount</span>
+            <Input
+              type="number"
+              className="mt-1"
+              step="0.01"
+              value={budgetLineForm.totalAmount?budgetLineForm.totalAmount:0}
+              name="totalAmount"
+              onChange={(e)=>setBudgetLineForm({...budgetLineForm,totalAmount:e.target.value})}
+              required
+            />
+          </Label>
+
+          <Label>
             <span>Unit Type</span>
             <Select
               className="mt-1"
@@ -592,6 +605,10 @@ const openCorrection = (id)=>{
            <div className='mb-4'>
                   <p  className="text-sm font-medium text-gray-600 dark:text-gray-300">Budget Donor Charge</p>
                   <p className="text-sm font-semibold text-red-700 dark:text-red-400">{budgetLines.donorCharge}%</p>
+            </div>
+              <div className='mb-4'>
+                  <p  className="text-sm font-medium text-gray-600 dark:text-gray-300">Burn Rate</p>
+                  <p className="text-sm font-semibold text-red-700 dark:text-red-400">{budgetLines.burnRate}%</p>
             </div>
        
  </div>

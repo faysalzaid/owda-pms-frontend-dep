@@ -4,7 +4,7 @@ import React, { useState, useEffect,Fragment } from 'react';import CountsSection
 import CTA from '../../components/CTA'
 import InfoCard from '../../components/Cards/InfoCard'
 import ChartCard from '../../components/Chart/ChartCard'
-import { Doughnut, Line } from 'react-chartjs-2'
+import { Doughnut, Line,Bar,HorizontalBar,Radar,Polar,Bubble,Scatter,Pie } from 'react-chartjs-2'
 import { AuthContext } from '../../hooks/authContext'
 import { useContext } from 'react'
 import ChartLegend from '../../components/Chart/ChartLegend'
@@ -54,7 +54,7 @@ const OwdaProjectDetial = (props) => {
     const {authState,settings} = useContext(AuthContext)
     const [searchResult,setSearchResult] = useState([])
     const [searchTerm,setSearchTerm] = useState("")
-    const [fetchedResult,setFetchedResult] = useState([])
+    const [projects,setProjects] = useState([])
     const [countsData,setCountsData] = useState({ projectCount:"",bidCount:"",activeProjects:"",completedProjects:""})
     const [budgetLines,setBudgetLines] = useState([])
     const [project,setProject] = useState({})
@@ -78,7 +78,8 @@ const OwdaProjectDetial = (props) => {
         owdaPartenerId:"", 
         owdaSectorId:"", 
         owdaCategoryId:"",
-        owdaAccountId:""
+        owdaAccountId:"",
+        percentage:""
 
     })
 
@@ -124,22 +125,25 @@ const OwdaProjectDetial = (props) => {
                 return setOpenError({open:true,message:`${resp.data.error}`})
               }
               // console.log(resp.data);
+                const data = resp.data
                 setProject(resp.data)
-                setBudgetLines(resp.data.owda_budget_lines)
-                setAllBCategory(resp.data.owda_budget_lines)
+                setBudgetLines(resp.data?.owda_budget_lines)
+                setAllBCategory(resp.data?.owda_budget_lines)
+                setProjects([data])
                 setProjectForm({
-                    name:resp.data.name, 
-                    status:resp.data.status, 
-                    code:resp.data.code, 
-                    description:resp.data.description, 
-                    starttime:resp.data.starttime, 
-                    endtime:resp.data.endtime, 
-                    color:resp.data.color, 
-                    owdaDonorId:resp.data.owdaDonorId, 
-                    owdaPartenerId:resp.data.owdaPartenerId, 
-                    owdaSectorId:resp.data.owdaSectorId, 
-                    owdaCategoryId:resp.data.owdaCategoryId,
-                    owdaAccountId:resp.data.owdaAccountId
+                    name:resp.data?.name, 
+                    status:resp.data?.status, 
+                    code:resp.data?.code, 
+                    description:resp.data?.description, 
+                    starttime:resp.data?.starttime, 
+                    endtime:resp.data?.endtime, 
+                    color:resp.data?.color, 
+                    owdaDonorId:resp.data?.owdaDonorId, 
+                    owdaPartenerId:resp.data?.owdaPartenerId, 
+                    owdaSectorId:resp.data?.owdaSectorId, 
+                    owdaCategoryId:resp.data?.owdaCategoryId,
+                    owdaAccountId:resp.data?.owdaAccountId,
+                    percentage:resp.data?.percentage
             
                 })
              
@@ -243,7 +247,7 @@ const OwdaProjectDetial = (props) => {
         // console.log(projectForm);
         e.preventDefault();
         await axios.put(`${url}/project/${id}`,projectForm,{withCredentials:true}).then((resp)=>{
-          console.log(resp.data);
+          // console.log(resp.data);
           if(resp.data.error){
             setOpenError({open:true,message:`${resp.data.error}`})
           }else{
@@ -265,9 +269,7 @@ const OwdaProjectDetial = (props) => {
       };
 
       
-      useEffect(()=>{
-        setFetchedResult(searchTerm.length<1?project:searchResult)
-      },[project,searchTerm])
+
   
   
     const searchHandler = async(search)=>{
@@ -282,6 +284,33 @@ const OwdaProjectDetial = (props) => {
         setSearchResult(project)
       }
     }
+
+
+
+
+
+    // chart function 
+
+
+const projectPercentileGraph = {
+  data: {
+      datasets: [{
+          data: projects?.map(pr=> pr.percentage),
+          backgroundColor: projects?.map(pr=>pr.color),
+          label: 'Percentage',
+      }, ],
+      labels: projects?.map((pr)=>pr.name),
+  },
+  options: {
+      responsive: true,
+      cutoutPercentage: 100,
+  },
+  legend: {
+      display: false,
+  },
+}
+
+    // end of chart function
 
 
 
@@ -332,7 +361,7 @@ const filterByCategory = async()=>{
   if(fCategory==0){
     setBudgetLines(allBCategory)
   }else{
-    console.log(fCategory);
+    // console.log(fCategory);
     const d = allBCategory.filter((bd)=>bd.owdaBudgetLineCategoryId==fCategory)
     setBudgetLines(d)
 
@@ -589,6 +618,20 @@ const filterByCategory = async()=>{
           </Label>
 
 
+          <Label>
+            <span>Percentage</span>
+            <Input
+              // type="date"
+              step="0.01"
+              className="mt-1"
+              value={projectForm.percentage}
+              name="endtime"
+              onChange={(e)=>setProjectForm({...projectForm,percentage:e.target.value})}
+              required
+            />
+          </Label>
+
+
          
 
 
@@ -653,21 +696,32 @@ const filterByCategory = async()=>{
             {category.map((ca) => (ca.id === project.owdaCategoryId ? ca.name : ""))}
           </p>
         </div>
-      </div>
-      <div className="w-full md:w-1/2 mb-4 mt-2">
-        <h2 className="text-lg dark:text-gray-100 font-semibold mb-4">Other Details</h2>
+
         <div className="mb-4">
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Partner</p>
           <p className="text-sm font-semibold text-green-700 dark:text-green-400">
             {partener.map((ac) => (ac.id === project.owdaPartenerId ? ac.name : ""))}
           </p>
         </div>
+
         <div className="mb-4">
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Donor</p>
           <p className="text-sm font-semibold text-red-700 dark:text-red-400">
             {donor.map((bn) => (bn.id === project.owdaDonorId ? bn.name : ""))}
           </p>
         </div>
+
+        <div className="mb-4">
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project inUse Amount</p>
+          <p className="text-sm font-semibold text-red-700 dark:text-red-400">ETB-{parseFloat(project.inUseAmount).toLocaleString({})}</p>
+           </div>
+
+    
+      </div>
+      <div className="w-full md:w-1/2 mb-4 mt-2">
+        <h2 className="text-lg dark:text-gray-100 font-semibold mb-4">Other Details</h2>
+       
+        
         <div className="mb-4">
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project Sector</p>
           <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">
@@ -681,10 +735,16 @@ const filterByCategory = async()=>{
            </div>
 
 
-           <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-600 dark:text-gray-100">Project inUse Amount</p>
-          <p className="text-sm font-semibold text-red-700 dark:text-red-400">ETB-{parseFloat(project.inUseAmount).toLocaleString({})}</p>
+           <div className="mb-4 ml-4">
+           <div className="grid md:grid-cols-1">
+            <ChartCard title="Percent of Completion">
+              <HorizontalBar {...projectPercentileGraph} />
+              <ChartLegend legends={projects}/>
+            </ChartCard>
+            </div>
            </div>
+
+
        
         </div>
     </div>
@@ -714,19 +774,19 @@ const filterByCategory = async()=>{
         Code
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
-        Unit Quantity
+        U.Quantity
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
         Duration
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
-        Unit Cost
+        U.Cost
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
-        Donor Charge
+        T.expenses
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
-        Category
+        BurnRate
       </th>
       <th scope="col"  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-100 uppercase tracking-wider">
         Total Amount
@@ -744,35 +804,36 @@ const filterByCategory = async()=>{
                   <div className="flex items-center">
         <div className="">
         <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">
-                      {owd.name}
+                      {owd?.name}
           </div>
         </div>
       </div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.code}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd?.code}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.unitQuantity}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd?.unitQuantity}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.duration}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd?.duration}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.unitCost}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{parseFloat(owd?.unitCost)?.toLocaleString({maximumFractionDigits:2})}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd.donorCharge}%</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">ETB-<span className='font-semibold'>{owd?.owda_activities?.reduce((acc,curr)=>acc+parseFloat(curr.totalAmount),0).toLocaleString({maximumFractionDigits:2})}</span></div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{bCategory.map((bc)=>bc.id===owd.owdaBudgetLineCategoryId?bc.name:"")}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{owd?.burnRate}</div>
     </td>
+      
   
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{parseFloat(owd.totalAmount).toLocaleString({maximumFractionDigits:2})}</div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300">{parseFloat(owd?.totalAmount).toLocaleString({maximumFractionDigits:2})}</div>
     </td>
     <td className="px-6 py-4 whitespace-nowrap">
-    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/budgetLines/${owd.id}`}><FaEdit className='text-blue-500'/></Link></div>
+    <div className="text-sm font-semibold font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/budgetLines/${owd?.id}`}><FaEdit className='text-blue-500'/></Link></div>
     </td>
   </tr>
 

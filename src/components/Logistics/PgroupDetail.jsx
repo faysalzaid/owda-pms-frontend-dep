@@ -574,12 +574,18 @@ const PurchaseGroupDetail = (props) => {
 
             <div className="flex mt-2">
               <p className="text-sm font-bold text-gray-500 dark:text-gray-100">Has Payment:</p>
-              <p className="ml-2 text-sm font-bold text-gray-900 dark:text-gray-100 font-bold">{pGroup?.hasPayment?"Yes":"Not Yet"}</p>
+              <p className="ml-2 text-sm font-bold text-gray-900 dark:text-gray-100 font-bold"><Badge type="warning">{pGroup?.hasPayment?"Yes":"Not Yet"}</Badge></p>
             </div>
 
             <div className="flex mt-2">
               <p className="text-sm font-bold text-gray-500 dark:text-gray-100">Status:</p>
-              <p className="ml-2 text-sm font-bold text-gray-900 dark:text-gray-100 font-bold">{pGroup?.status}</p>
+              <p className="ml-2 text-sm font-bold text-gray-900 dark:text-gray-100 font-bold"><Badge type="success">{pGroup?.status}</Badge></p>
+            </div>
+
+
+            <div className="flex mt-2">
+              <p className="text-sm font-bold text-gray-500 dark:text-gray-100">Purchase Type:</p>
+              <p className="ml-2 text-sm font-bold text-gray-900 dark:text-gray-100 font-bold"><Badge type="primary">{pGroup?.type}</Badge></p>
             </div>
 
           </div>

@@ -52,7 +52,8 @@ const GRNList = () => {
   const [fetchedResult, setFetchedResult] = useState([]);
   const [purchase,setPurchase] = useState([])
   const [suppliers,setSuppliers] = useState([])
-
+  const [showQuantity,setShowQuantity] = useState(0)
+  const [itemsList,setItemsList] = useState([])
   const [countsData, setCountsData] = useState({
     projectCount: '',
     bidCount: '',
@@ -68,7 +69,6 @@ const GRNList = () => {
     location: '',
     receivedBy: '',
     purchaseRequestGroupId:"",
-    SupplierId:""
   });
 
   // Notifications
@@ -165,10 +165,13 @@ const GRNList = () => {
 
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Add your logic to handle form submission and API call
-  };
+useEffect(()=>{
+    const data = purchase.filter((pr)=>pr.id==grnForm.purchaseRequestGroupId)
+    console.log('data',data[0]?.purchase_requests);
+    setShowQuantity(data[0]?.purchase_requests?.reduce((acc,curr)=>acc+parseInt(curr.quantity),0).toLocaleString({maximumFractionDigits:2}))
+    // setShowQuantity(data)
+    setItemsList(data[0]?.purchase_requests)
+},[grnForm.purchaseRequestGroupId])
 
   useEffect(() => {
     setFetchedResult(searchTerm.length < 1 ? grn : searchResult);
@@ -217,7 +220,6 @@ const GRNList = () => {
   const handleSend = async (e) => {
     e.preventDefault()
     // console.log(grnForm);
-    if(grnForm.SupplierId==""||grnForm.SupplierId==="Select Supplier") return setOpenError({open:true,message:"Please Provide Supplier"})
     if(grnForm.purchaseRequestGroupId===""||grnForm.purchaseRequestGroupId==="Select Purchase Request") return setOpenError({open:true,message:"Please Provide Purchase Request"})
     await axios.post(`${url}/grn`,grnForm,{withCredentials:true}).then((resp)=>{
         if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
@@ -325,7 +327,7 @@ const GRNList = () => {
       </TableContainer>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <ModalHeader>Register GRN</ModalHeader>
+        <ModalHeader>Register GRN  {showQuantity?`General Quantity Required  ${showQuantity}`:""}</ModalHeader>
         <ModalBody>
           <form onSubmit={handleSend}>
             <div className="grid grid-cols-2 gap-4">
@@ -341,21 +343,6 @@ const GRNList = () => {
                   <option>Select Purchase Group</option>
                   {purchase.map((pr)=><option key={pr.id} value={pr.id}>{pr.name}</option>)}
                  
-                </Select>
-              </Label>
-
-              <Label>
-                <span>Supplier</span>
-                <Select
-                  className="mt-1"
-                  name="quantityCheck"
-                  onChange={(e) => setGRNForm({ ...grnForm, SupplierId: e.target.value })}
-                  required
-                >
-                  <option>Select Supplier</option>
-
-                  {suppliers.map((pr)=><option key={pr.id} value={pr.id}>{pr.name}</option>)}
-                
                 </Select>
               </Label>
 

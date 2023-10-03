@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 
@@ -260,7 +260,7 @@ const BankList = () => {
 
         {/* End of delete Section */}
 
-        <Button onClick={openModal}>New Bank</Button>
+        <Button onClick={openModal} className="custom-button">New Bank</Button>
   
       
         </TableContainer>
@@ -294,8 +294,8 @@ const BankList = () => {
 
          <Button className="mt-6 custom-button" type="submit">Submit</Button>
         </div>
-           <div className=" mt-2 block  sm:hidden">
-<Button block size="large" type="submit" className="custom-button">
+           <div className=" mt-2 block  sm:hidden"> 
+            <Button block size="large" type="submit" className="custom-button">
               Accept
             </Button>
           </div>
@@ -314,11 +314,7 @@ const BankList = () => {
             </Button>
           </div>
 
-          {/* <div className="block w-full sm:hidden">
-<Button block size="large" type="submit" className="custom-button">
-              Accept
-            </Button>
-          </div> */}
+
       </ModalFooter>
     </Modal>
 

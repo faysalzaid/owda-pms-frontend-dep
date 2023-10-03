@@ -497,7 +497,7 @@ const selectQuotation = async()=>{
 
            <div className="mb-4">
              <p className="text-sm font-medium text-gray-600 dark:text-gray-100">Number of Items  Or Purchases Included</p>
-            <p className="text-1xl font-semibold text-red-600">{rfqData.purchase_request_group?.purchase_requests?.length} Items</p>
+            <p className="text-1xl font-semibold text-red-600">{rfqData?.purchase_request_group?.purchase_requests?.length} Items</p>
            </div>
            
           

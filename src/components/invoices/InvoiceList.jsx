@@ -248,7 +248,7 @@ const captureProject = ()=>{
     return (
       <>
   
-        <PageTitle>Invoices</PageTitle>
+        <PageTitle>Invoices </PageTitle>
         {/* Notifications */}
         <TitleChange name={`${settings.name} | Dashboard`}/><ErrorAlert
         open={openError.open}

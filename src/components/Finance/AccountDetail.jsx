@@ -929,7 +929,7 @@ const AccountDetail = () => {
     </td>
 
     <td className="px-6 py-4 whitespace-nowrap">
-      <div className="text-sm font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/projects/${owd.id}`}><FaEdit className='text-blue-500'/></Link></div>
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300"><Link to={`/app/invoice/${owd.id}`}><FaEdit className='text-blue-500'/></Link></div>
     </td>
   </tr>
  

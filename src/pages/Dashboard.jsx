@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';import CountsSection from 'co
 import CTA from '../components/CTA'
 import InfoCard from '../components/Cards/InfoCard'
 import ChartCard from '../components/Chart/ChartCard'
-import { Doughnut, Line } from 'react-chartjs-2'
+import { Doughnut, Line,Bar,HorizontalBar,Radar,Polar,Bubble,Scatter,Pie } from 'react-chartjs-2'
 import { AuthContext } from '../hooks/authContext'
 import { useContext } from 'react'
 import ChartLegend from '../components/Chart/ChartLegend'
@@ -164,12 +164,12 @@ const projectUseAmountGraph = {
       <PageTitle>Projects</PageTitle>
       <div className="grid gap-6 mb-8 md:grid-cols-2">
       <ChartCard title="Project Percent Graph">
-          <Doughnut {...projectPercentileGraph} />
+          <Polar {...projectPercentileGraph} />
           <ChartLegend legends={projects}/>
         </ChartCard>
 
         <ChartCard title="Project In Use Amount">
-          <Line {...projectUseAmountGraph} />
+          <HorizontalBar {...projectUseAmountGraph} />
           <ChartLegend legends={projects}/>
         </ChartCard>
 

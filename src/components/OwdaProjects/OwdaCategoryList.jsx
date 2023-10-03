@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 
@@ -260,7 +260,7 @@ const OwdaCategoryList = () => {
 
         {/* End of delete Section */}
 
-        <Button onClick={openModal}>New Category</Button>
+        <Button onClick={openModal} className="custom-button">New Category</Button>
   
       
         </TableContainer>
@@ -295,7 +295,7 @@ const OwdaCategoryList = () => {
          <Button className="mt-6 custom-button" type="submit">Submit</Button>
         </div>
            <div className=" mt-2 block  sm:hidden">
-<Button block size="large" type="submit" className="custom-button">
+          <Button block size="large" type="submit" className="custom-button">
               Accept
             </Button>
           </div>

@@ -274,7 +274,7 @@ const LeaveList = () => {
 
         {/* End of delete Section */}
 
-        <Button onClick={openModal}>New Leave</Button>
+        <Button onClick={openModal} className="custom-button">New Leave</Button>
   
       
         </TableContainer>

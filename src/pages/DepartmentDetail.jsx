@@ -24,6 +24,7 @@ import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
 import { url } from '../config/urlConfig'
 import { useContext } from 'react'
 import { AuthContext } from '../hooks/authContext'
+import "config/custom-button.css"
 
 function DepartmentDetail(props) {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -110,22 +111,28 @@ function DepartmentDetail(props) {
         <PageTitle>List of Departments </PageTitle>
         <p></p>
         <div>
-          <Button onClick={openModal}>Update Department</Button>
+          <Button onClick={openModal} className="custom-button">Update Department</Button>
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ModalHeader>Insert Client Info</ModalHeader>
-          <span style={{color:'red'}}>{errorMessage}</span>
           <ModalBody>
             
           <form onSubmit={editDepartment}>
           <Label>
             <span>Name</span>
-              <Input type="text" className="mt-1" name="name" placeholder="Department Name" value={depForm.name} autoComplete='off' onChange={(e)=>setDepForm({name:e.target.value})}/>
+              <Input type="text" className="mt-1" name="name" placeholder="Department Name" value={depForm.name} autoComplete='off' onChange={(e)=>setDepForm({name:e.target.value})} required/>
           </Label>
           
-        <Label className="mt-4">
-          <Button type="submit">Save</Button>
-        </Label>
+          <div className="hidden sm:block">
+            <Button className="mt-6 custom-button" type="submit">Submit</Button>
+            </div>
+              <div className=" mt-2 block  sm:hidden">
+              <Button block size="large" type="submit" className="custom-button">
+                Accept
+              </Button>
+            </div>
+
+
           </form>
               
      
@@ -147,11 +154,7 @@ function DepartmentDetail(props) {
                 Cancel
               </Button>
             </div>
-            <div className="block w-full sm:hidden">
-              <Button block size="large">
-                Accept
-              </Button>
-            </div>
+          
           </ModalFooter>
         </Modal>
   
