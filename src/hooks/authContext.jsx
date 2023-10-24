@@ -6,7 +6,7 @@ import jwt_decode from 'jwt-decode'
 import { url } from "config/urlConfig";
 import { useEffect } from "react";
 import { withRouter,useHistory } from "react-router-dom";
-import useGrapAuth from "./useRefresh";
+// import useGrapAuth from "./useRefresh";
 
 export const AuthContext = createContext("")
 
@@ -21,7 +21,7 @@ export const AuthContextProvider = withRouter((props) => {
     const history = useHistory()
     // const navigate = useNavigate()
     const userData = storedValue ? JSON.parse(storedValue) : undefined;
-    const refresh = useGrapAuth()
+    // const refresh = useGrapAuth()
 
     const [settings,setSettings] = useState({logo:"", name:"", loginlogo:"", address1:"", address2:""})
     const [authState, setAuthState] = useState({
@@ -31,7 +31,7 @@ export const AuthContextProvider = withRouter((props) => {
         role:"",
         image:"",
         state:false,
-        accessToken:""
+        
     })
 
 
@@ -40,7 +40,6 @@ export const AuthContextProvider = withRouter((props) => {
 
 
 useEffect(()=>{
-
         const getData = async()=>{
           await axios.get(`${url}/settings`).then((resp)=>{
             const data = resp.data[0]
@@ -49,15 +48,13 @@ useEffect(()=>{
           // console.log(error);
       })
 
-          if(userData?.state!==true){
-            if(history.location.pathname==='/login'){
-                return
-            }else{
-              history.push('/')
+          if(!userData||userData?.state!==true){
+            if (history.location.pathname !== '/login') {
+              history.push('/login');
             }
-            }else{
-              setAuthState({ id:userData?.id,username:userData?.username, email:userData?.email,image:userData?.image, role:userData?.role,state:true,accessToken:userData?.accessToken })
-              if(props.history.length>0){
+            }else if(userData&&userData.state===true){
+              setAuthState({ id:userData?.id,username:userData?.username, email:userData?.email,image:userData?.image, role:userData?.role,state:true, })
+              if(history.length>0){
                 // console.log('hello')
                   // console.log(props.history);
                   if(history.location.pathname==='/login'){
@@ -83,9 +80,18 @@ useEffect(()=>{
         // Set the interval to send the refresh token every 5 minutes
         const intervalId = setInterval(async() => {
           try {
+            // console.log('before the url',userData?.id);
+            // console.log('before the url authstate',authState.id);
             const resp = await axios.post(`${url}/login/refreshToken`, { id: userData?.id });
-            if(resp.data.error) return setAuthState({ id: '', username: '', email: '', image: '', role: '', state: false });
+            if(resp.data.error){
+              // console.log('error',resp.data);
+              // console.log('userid',userData?.id);
+              // localStorage.setItem('User', "");
+              // props.history.push('/login')
+              return
+            }
             const data = resp.data;
+            // console.log('respdata',resp.data);
             const usersData = {
                 id: data.id,
                 username: data.name,
@@ -101,11 +107,12 @@ useEffect(()=>{
             console.log('called authcontext');
   
         } catch (error) {
-            setAuthState({ id: '', username: '', email: '', image: '', role: '', state: false });
-            localStorage.setItem('User', "");
-            props.history.push('/login')
+            // setAuthState({ id: '', username: '', email: '', image: '', role: '', state: false });
+            // localStorage.setItem('User', "");
+            console.log('problem',error);
+            history.push('/login')
         }
-        },1*60*1000); // 5 minutes (in milliseconds)
+        },1*60*1000); // 1 minutes (in milliseconds)
     
         // Clean up the interval when the component unmounts
         return () => {

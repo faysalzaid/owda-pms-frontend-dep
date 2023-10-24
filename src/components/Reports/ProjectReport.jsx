@@ -115,7 +115,7 @@ const ProjectReport = () => {
                 setOpenError({open:true,message:`${resp.data.error}`})
               }else{
                 setProject(resp.data)
-                // console.log(resp.data);
+                console.log(resp.data);
               }
           })
     
@@ -479,87 +479,42 @@ const filterReason = (filterValue) => {
 
 
 
-
-
-<TableContainer className="mb-8">
-<Table>
-  <TableHeader>
-    <tr>
-      <TableCell>Invoice Date</TableCell>
-      <TableCell>Amount Paid</TableCell>
-      <TableCell>Added By</TableCell>
-      <TableCell>Reason</TableCell>
-      <TableCell>Actions</TableCell>
-    </tr>
-  </TableHeader>
-  {invoices?.map((invoice, i) => (
-  <TableBody key={i}>
-    
-      <TableRow>
-        <TableCell>
-          <div className="flex items-center text-sm">
-            
-            <div>
-              <p className="font-semibold">{invoice.date}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">{invoice.date}</p>
-            </div>
-          </div>
-        </TableCell>
-        <TableCell>
-          <div className="flex items-center text-sm">
-            
-            <div>
-              <p className="font-semibold">ETB {parseFloat(invoice.amount).toLocaleString()}</p>
-              {/* <p className='font-semibold'>{invoice.ProjectId}sdf</p> */}
-           
-            </div>
-          </div>
-        </TableCell>
-        <TableCell>
-          <div className="flex items-center text-sm">
-            
-            <div>
-              <p className="font-semibold">{invoice.addedBy.toLocaleString()}</p>
-              {/* <p className='font-semibold'>{invoice.ProjectId}sdf</p> */}
-           
-            </div>
-          </div>
-        </TableCell>
-        <TableCell>
-          <span className="text-sm font-semibold">{invoice.createdFor}</span>
-        </TableCell>
+        <div className="bg-white shadow-md rounded my-6">
+  <table className="min-w-max w-full table-auto">
+    <thead>
+      <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
+        <th className="py-3 px-6 text-left">Description</th>
+        <th className="py-3 px-6 text-left">Unit Quantity</th>
+        <th className="py-3 px-6 text-left">Unit Cost</th>
+        <th className="py-3 px-6 text-left">Duration</th>
+        <th className="py-3 px-6 text-left">Unit (Months)</th>
+        <th className="py-3 px-6 text-left">% Charge To</th>
+        <th className="py-3 px-6 text-left">Total (US)</th>
+        <th className="py-3 px-6 text-left">Expenditures</th>
+        <th className="py-3 px-6 text-left">Variance</th>
+        <th className="py-3 px-6 text-left">Burning</th>
+      </tr>
+    </thead>
+    <tbody className="text-gray-600 text-sm font-light">
+        {singleProject?.project?.owda_budget_lines?.map((bl)=>        
+      <tr className="border-b border-gray-200 hover:bg-gray-100" key={bl?.id}>
+        <td className="font-bold py-3 px-6 text-left">{bl?.name}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.unitQuantity}</td>
+        <td className="font-bold py-3 px-6 text-left">{parseFloat(bl?.unitCost).toLocaleString()}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.duration}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.owda_unit_type?.name}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.donorCharge}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.owda_activities?.reduce((acc,curr)=>acc+parseFloat(curr.usd),0).toLocaleString({maximumFractionDigits:2})}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.owda_activities?.reduce((acc,curr)=>acc+parseFloat(curr.totalAmount),0).toLocaleString({maximumFractionDigits:2})}</td>
+        <td className="font-bold py-3 px-6 text-left">{parseFloat(bl?.totalAmount).toLocaleString()}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.burnRate}</td>
+      </tr>
         
-        <TableCell>
-          <div className="flex items-center space-x-4">
-            <Link to={{pathname:`/app/invoice/${invoice.id}`}}>
-            <Button layout="link" size="icon" aria-label="Edit">
-              <EditIcon className="w-5 h-5" aria-hidden="true" />
-            </Button>
-            </Link>
-          </div>
-        </TableCell>
-      </TableRow>
-
-  </TableBody>
-      ))}
-      <TableBody>
-        <TableRow>
-
-        <TableCell className="text-gray-900 font-bold dark:text-gray-100">
-          SubTotal : ETB {invoices?.reduce((acc,curr)=>acc+parseFloat(curr.amount),0).toLocaleString({maximumFractionDigits:2})}
-        </TableCell>
-        </TableRow>
-      </TableBody>
-</Table>
-<TableFooter>
-  {/* <Pagination
-    // totalResults={totalResults}
-    // resultsPerPage={resultsPerPage}
-    // onChange={onPageChangeTable2}
-    // label="Table navigation"
-  /> */}
-</TableFooter>
-</TableContainer>
+        )}
+  
+    </tbody>
+  </table>
+</div>
 
 
 
