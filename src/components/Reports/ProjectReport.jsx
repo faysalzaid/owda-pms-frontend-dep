@@ -507,7 +507,7 @@ const filterReason = (filterValue) => {
         <td className="font-bold py-3 px-6 text-left">{bl?.owda_activities?.reduce((acc,curr)=>acc+parseFloat(curr.usd),0).toLocaleString({maximumFractionDigits:2})}</td>
         <td className="font-bold py-3 px-6 text-left">{bl?.owda_activities?.reduce((acc,curr)=>acc+parseFloat(curr.totalAmount),0).toLocaleString({maximumFractionDigits:2})}</td>
         <td className="font-bold py-3 px-6 text-left">{parseFloat(bl?.totalAmount).toLocaleString()}</td>
-        <td className="font-bold py-3 px-6 text-left">{bl?.burnRate}</td>
+        <td className="font-bold py-3 px-6 text-left">{bl?.burnRate}%</td>
       </tr>
         
         )}

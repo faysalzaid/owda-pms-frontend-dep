@@ -269,8 +269,8 @@ const PayrollDetail = (props) => {
 
         {/* End of delete Section */}
         <div className='flex'>
-        <Button className="text-sm" onClick={openModal}>Update Payroll</Button>
-        <FaTrashAlt className='m-2 text-3xl' style={{color:'red'}} onClick={()=>setIsDeleteOpen({open:true})}/>
+        {/* <Button className="text-sm" onClick={openModal}>Update Payroll</Button> */}
+        {/* <FaTrashAlt className='m-2 text-3xl' style={{color:'red'}} onClick={()=>setIsDeleteOpen({open:true})}/> */}
         </div>
         
   
@@ -418,61 +418,50 @@ const PayrollDetail = (props) => {
       
 
     <div className="container  my-8 p-9">
-  <h1 className="text-3xl font-bold mb-4 dark:text-gray-300">Payroll Detail</h1>
-  <div className="dark:bg-gray-800 text-dark-900 dark:text-gray-300 shadow overflow-hidden sm:rounded-lg">
+  <h1 className="text-3xl font-bold mb-4 dark:text-gray-300 font-semibold">Payroll Detail</h1>
+  <div className="dark:bg-gray-800 text-dark-900 dark:text-gray-300 font-semibold shadow overflow-hidden sm:rounded-lg">
     <div className="px-4 py-5 sm:px-6">
-      <h2 className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-300">Employee Payroll Information</h2>
-      <p className="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-300">Basic information about the employee.</p>
+      <h2 className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-300 font-semibold">Employee Payroll Information</h2>
+      <p className="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-300 font-semibold">Basic information about the employee.</p>
     </div>
     <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
       <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-3">
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Name</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">{employeeData.map((empl)=>empl.id===payrollData?.EmployeeId?empl.name:"")}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Name</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">{employeeData.map((empl)=>empl.id===payrollData?.EmployeeId?empl.name:"")}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Date</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">{payrollData?.date}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Date</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">{payrollData?.date}</dd>
+        </div>
+     
+        <div>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Taxable Amount</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.taxableAmount)?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Position</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">{payrollData?.position}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Medical Allowance</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.medicalAllowance)?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Department</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">{departmentData.map((dep)=>dep.id===payrollData?.DepartmentId?dep.name:"")}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Hardship Allowance</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.hardshipAllowance)?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Basic Salary</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.basicSalary?.toLocaleString()}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Income Tax</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.incomeTax)?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Taxable Amount</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.taxableAmount?.toLocaleString()}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">Staff Advance</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {payrollData?.staffAdvance?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Medical Allowance</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.medicalAllowance?.toLocaleString()}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">PF/Pension 5/7%</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.pfPension57)?.toLocaleString()}</dd>
         </div>
         <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Hardship Allowance</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.hardshipAllowance?.toLocaleString()}</dd>
-        </div>
-        <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Income Tax</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.incomeTax?.toLocaleString()}</dd>
-        </div>
-        <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">Staff Advance</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.staffAdvance?.toLocaleString()}</dd>
-        </div>
-        <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">PF/Pension 5/7%</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.pfPension57?.toLocaleString()}</dd>
-        </div>
-        <div>
-          <dt className="mt-2 text-sm-bold font-medium text-black-500">PF/Pension 10/11%</dt>
-          <dd className=" text-sm text-gray-900 dark:text-gray-300">ETB {payrollData?.pfPension1011?.toLocaleString()}</dd>
+          <dt className="mt-2 text-sm-bold font-medium text-gray-900 font-bold dark:text-gray-100">PF/Pension 10/11%</dt>
+          <dd className=" text-sm text-gray-900 dark:text-gray-300 font-semibold">ETB {parseFloat(payrollData?.pfPension1011)?.toLocaleString()}</dd>
           </div>
         </dl>
       </div>

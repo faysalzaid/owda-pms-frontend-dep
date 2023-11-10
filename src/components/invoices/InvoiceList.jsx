@@ -219,8 +219,8 @@ const handleSubmit = async(e)=>{
   })
 }
 
-const handleDelete = ()=>{
-  axios.delete(`${url}/invoice/${isDeleteOpen.id}`,{withCredentials:true}).then((resp)=>{
+const handleDelete = async()=>{
+  await axios.delete(`${url}/invoice/${isDeleteOpen.id}`,{withCredentials:true}).then((resp)=>{
     if(resp.data.error){
       setOpenError({open:true,message:`${resp.data.error}`})
     }else{
@@ -440,9 +440,9 @@ const captureProject = ()=>{
                         <EditIcon className="w-5 h-5" aria-hidden="true" />
                       </Button>
                       </Link>
-                      <Button  style={{color:'red'}} layout="link" size="icon" aria-label="Delete">
+                      {/* <Button  style={{color:'red'}} layout="link" size="icon" aria-label="Delete">
                         <TrashIcon className="w-5 h-5" aria-hidden="true" onClick={()=>openDelete(invoice.id)}/>
-                      </Button>
+                      </Button> */}
                     </div>
                   </TableCell>
                 </TableRow>

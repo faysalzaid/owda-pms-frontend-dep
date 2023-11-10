@@ -57,6 +57,7 @@ function Login(props) {
 const onSubmit = async(data)=>{
   try {
     await axios.post(`${url}/login`,data,{ withCredentials: true }).then((response)=>{
+      // console.log('resp.data',response.data);
       if(response.data.error){
           setOpenError({open:true,message:`${response.data.error}`})  
          
@@ -72,14 +73,13 @@ const onSubmit = async(data)=>{
           state:true,
           // Add other properties as needed
         }
-          const stringFied = JSON.stringify(userData?userData:undefined)
+          const stringFied = JSON.stringify(userData)
           setAuthState({id:data.id,username:data.name,email:data.email,image:data.image,role:data.role,state:true})
           setOpenSuccess({open:true,message:"Logged In Successfully"})
-   
-          // console.log(accessToken);
-          // setCookie('accessToken', accessToken, { expires: 7, path: '/' })
           localStorage.setItem('User', stringFied); 
-          props.history.push('/app/dashboard')
+          setTimeout(() => {
+            props.history.push('/app/dashboard')
+          }, 1000);
 
            
         

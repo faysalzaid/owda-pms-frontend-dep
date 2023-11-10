@@ -227,12 +227,10 @@ const OwdaActivityDetail = (props) => {
   // Delete row
   const handleDelete = async()=>{
     await axios.delete(`${url}/activity/${id}`,{withCredentials:true}).then((resp)=>{
+      console.log('resp.data', resp.data);
       if(resp.data.error){
         openError({open:true,message:`${resp.data.error}`})
       }else{
-        // const data = activity.filter((dt)=>dt.id!==isDeleteOpen.id)
-        // setActivity(data)
-        // setOpenSuccess({open:true,message:"deleted Successfully"})
         closeDelete()
         setOpenSuccess({open:true,message:"Successfully Deleted"})
         setTimeout(() => {

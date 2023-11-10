@@ -16,7 +16,7 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
 import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
 
 
 import {
@@ -53,16 +53,14 @@ import { FaBook, FaBookDead, FaDownload, FaEdit,FaCashRegister } from 'react-ico
 
 const AccountDetail = () => {
     const {authState,settings} = useContext(AuthContext)
-    const [searchResult,setSearchResult] = useState([])
-    const [searchTerm,setSearchTerm] = useState("")
-    const [fetchedResult,setFetchedResult] = useState([])
+    const [fromTransfers,setFromTransfers] = useState([])
     const [accountType,setAccountType] = useState([])
     const [bank,setBank] = useState([])
     const [currency,setCurrency] = useState([])
     const [donor,setDonor] = useState([])
     const [countsData,setCountsData] = useState({ projectCount:"",bidCount:"",activeProjects:"",completedProjects:""})
     const [account,setAccount] = useState({})
-    const [isTransferOpen,setIsTransferOpen] = useState({open:false,value:"",toAccount:"",owdaCurrencyId:"",owdaDonorId:"",date:""})
+    const [isTransferOpen,setIsTransferOpen] = useState({open:false,value:"",toAccount:"",owdaCurrencyId:"",date:""})
     const [loopAccount,setLoopAccount] = useState([])
     const [accountForm,setAccountForm] = useState({
         name:"",
@@ -114,6 +112,9 @@ const AccountDetail = () => {
     }
 
 
+   
+    
+
 
       useEffect(()=>{
         const getData=async()=>{
@@ -121,7 +122,7 @@ const AccountDetail = () => {
                 if(resp.data.error){
                     setOpenError({open:true,message:`${resp.data.error}`})
                   }else{
-                    console.log(resp.data);
+                    // console.log(resp.data);
                     setAccount(resp.data)
                     setAccountForm({
                         name:resp.data.name,
@@ -197,7 +198,6 @@ const AccountDetail = () => {
 
             await axios.get(`${url}/accountTypes`,{withCredentials:true}).then((resp)=>{
                 setAccountType(resp.data)
-             
             }).catch((error)=>{
                 if (error.response && error.response.data && error.response.data.error) {
                     setOpenError({open:true,message:`${error.response.data.error}`});
@@ -210,6 +210,19 @@ const AccountDetail = () => {
             await axios.get(`${url}/counts`,{withCredentials:true}).then((resp)=>{
               const data = resp.data
               setCountsData({ projectCount:data.projectsCount,bidCount:data.countBids,activeProjects:data.activeProjectsCount,completedProjects:data.completedProjects})
+            }).catch((error)=>{
+                if (error.response && error.response.data && error.response.data.error) {
+                    setOpenError({open:true,message:`${error.response.data.error}`});
+                  } else {
+                    setOpenError({open:true,message:"An unknown error occurred"});
+                  }
+            })
+
+            await axios.get(`${url}/transfers`,{withCredentials:true}).then((resp)=>{
+              if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
+              // console.log('Transfers',resp.data);
+              const data = resp.data.filter((dt)=>dt.toAccountId===id)
+              setFromTransfers(data)
             }).catch((error)=>{
                 if (error.response && error.response.data && error.response.data.error) {
                     setOpenError({open:true,message:`${error.response.data.error}`});
@@ -254,24 +267,10 @@ const AccountDetail = () => {
       };
 
       
-      useEffect(()=>{
-        setFetchedResult(searchTerm.length<1?account:searchResult)
-      },[account,searchTerm])
-  
-  
-    const searchHandler = async(search)=>{
-      setSearchTerm(search)
-      if(search!==0){
-        const newPayroll = account?.filter((empl)=>{
-          return Object.values(empl).join(" ").toLowerCase().includes(search.toLowerCase())
-        })
-        // console.log(newEmployeeList);
-        setSearchResult(newPayroll)
-      }else{
-        setSearchResult(account)
-      }
-    }
 
+  
+  
+ 
 
     // Chevron Logics
     
@@ -280,6 +279,20 @@ const AccountDetail = () => {
     const toggleIncome = () => {
       setIsIncomeOpen(!isIncomeOpen);
     };
+
+
+    const [isTransferDataOpen,setIsTransferDataOpen]=useState(false)
+    const toggleTransfer = () => {
+      setIsTransferDataOpen(!isTransferDataOpen);
+    };
+
+
+
+    const [isReceivedOpen,setIsReceivedOpen]=useState(false)
+    const toggleReceived = () => {
+      setIsReceivedOpen(!isReceivedOpen);
+    };
+
 
 
     const [isProjectOpen, setIsProjectOpen] = useState(false);
@@ -310,6 +323,20 @@ const AccountDetail = () => {
     setIsDeleteOpen({open:true,id})
 }
 
+
+
+const [isDeleteTOpen,setIsDeleteTOpen] = useState({open:false,id:""})
+
+const closeTDelete = ()=>{
+  setIsDeleteTOpen(false)
+}
+const openTDelete = (id)=>{
+  setIsDeleteTOpen({open:true,id})
+  // console.log('the id is ',id);
+}
+
+
+
   const openTransfer = ()=>{
     setIsTransferOpen({open:true})
   }
@@ -328,18 +355,17 @@ const AccountDetail = () => {
           date:isTransferOpen.date,  
         }
         // console.log(req);
-        await axios.post(`${url}/income/transfer`,request,{withCredentials:true}).then((resp)=>{
+        await axios.post(`${url}/transfers`,request,{withCredentials:true}).then((resp)=>{
           if(resp.data.error){
             setOpenError({open:true,message:`${resp.data.error}`})
           }else{
-            console.log(request);
+            // console.log(request);
             setOpenSuccess({open:true,message:"Successfully Transfered"}) 
             setAccount(resp.data)
             closeTransfer()
 
           }
         })
-        await axios.post()
     }
 
 
@@ -361,6 +387,28 @@ const AccountDetail = () => {
             setOpenError({open:true,message:"An unknown error occurred"});
           }
     })
+}
+
+
+
+
+// Transfer Delete Section
+
+const handleTransferDelete = async()=>{
+  await axios.delete(`${url}/transfers/${isDeleteTOpen.id}`,{withCredentials:true}).then((resp)=>{
+    // console.log('the id:',isDeleteTOpen.id);
+      if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
+      setOpenSuccess({open:true,message:"deleted Transfer Successfully"})
+      setAccount(resp.data)
+      closeTDelete()
+      
+  }).catch((error)=>{
+      if (error.response && error.response.data && error.response.data.error) {
+          setOpenError({open:true,message:`${error.response.data.error}`});
+        } else {
+          setOpenError({open:true,message:"An unknown error occurred"});
+        }
+  })
 }
 
 
@@ -410,6 +458,21 @@ const AccountDetail = () => {
       </Modal>
 
         {/* End of delete Section */}
+
+            {/* Delete Transfer Confirm section */}
+            <Modal isOpen={isDeleteTOpen.open} onClose={closeTDelete}>
+          <ModalHeader>Confirm Action</ModalHeader>
+          <ModalBody>
+            <p>Are you sure you want to perform this action?</p>
+          </ModalBody>
+          <ModalFooter>
+            <button className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600" onClick={handleTransferDelete}>
+              Confirm
+            </button>
+          </ModalFooter>
+      </Modal>
+
+        {/* End of delete Transfer Section */}
 
           {/* Transfer section */}
           <Modal isOpen={isTransferOpen.open} onClose={closeTransfer}>
@@ -467,24 +530,6 @@ const AccountDetail = () => {
             </Select>
           </Label>
 
-
-          <Label>
-            <span>Donor</span>
-            <Select
-              className="mt-1"
-              // value={accountForm.owdaBankId}
-              name="owdaBankId"
-            //   value={formValues.CompanyId}
-              onChange={(e)=>setIsTransferOpen({...isTransferOpen,owdaDonorId:e.target.value})}
-              required
-            >
-              <option value="" >Select Donor</option>
-              {donor.map((cp,i)=>(
-                <option key={i} value={cp.id}>{cp.name}</option>
-              ))}
-              
-            </Select>
-          </Label>
 
           <Label>
             <span>Currency</span>
@@ -705,10 +750,7 @@ const AccountDetail = () => {
              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Account Bank</p>
             <p  className="text-sm font-semibold text-orange-700 dark:text-yellow-400">{bank.map((bn)=>bn.id==account.owdaBankId?bn.name:"")}</p>
            </div>
-           {/* <div className="mb-4">
-             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Account Balance</p>
-            <p className="text-2xl font-semibold text-red-600">{parseFloat(account.balance).toLocaleString({maximumFractionDigits:2})}</p>
-           </div> */}
+           
            <div className="mb-4">
              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Account</p>
             <p className="text-2xl font-semibold text-red-600">{parseFloat(account.balance).toLocaleString({maximumFractionDigits:2})}</p>
@@ -717,11 +759,7 @@ const AccountDetail = () => {
              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Balance</p>
             <p className="text-2xl font-semibold text-red-600">{parseFloat(account.remaining).toLocaleString({maximumFractionDigits:2})}</p>
            </div>
-           {/* <div className="mb-4">
-             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Account Used</p>
-            <p className="text-2xl font-semibold text-red-600">{parseFloat(account.utilized).toLocaleString({maximumFractionDigits:2})}</p>
-           </div>
-        */}
+           
  </div>
      
 
@@ -938,6 +976,8 @@ const AccountDetail = () => {
    
     </tbody>
     </table>
+    <span className='ml-4 dark:text-white'>Total:-<b>ETB-{account?.owda_invoices?.reduce((acc,curr)=>acc+parseFloat(curr.amount),0).toLocaleString()}</b></span>
+
     </div>
     </div>
     
@@ -947,6 +987,171 @@ const AccountDetail = () => {
 </div>
 
 
+
+
+<div className="bg-gray-100 dark:bg-gray-800 flex flex-col items-center justify-center font-sans mb-6 overflow-x-auto mt-6">
+  <div className="w-full">
+    <div className="flex">
+      <button
+        className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 text-dark-900 dark:text-gray-100  p-4 shadow-md"
+        onClick={toggleTransfer}
+      >
+      <Badge type="primary" className="font-bold">Related Transfers</Badge>
+         {isTransferDataOpen ? (
+          <FaChevronUp className="text-xl ml-4" />
+        ) : (
+          <FaChevronDown className="text-xl ml-4" />
+        )}
+
+      </button>
+      
+      
+   
+    </div>
+
+        {isTransferDataOpen&&(<div className="bg-white dark:bg-gray-700 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 flex flex-wrap">
+    <div className="overflow-x-auto">
+    <table className="min-w-full divide-gray-200 dark:divide-gray-600">
+    <thead className="bg-gray-50 dark:bg-gray-800">
+    <tr>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Transfer ID
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Amount
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        ToAccount
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Date
+      </th>
+
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Delete
+      </th>
+    
+    </tr>
+  </thead>
+  <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-700 dark:divide-gray-600">
+    {account?.Transfers?.map((owd)=>
+    
+    <tr key={owd.id}>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">#{owd.id}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">ETB - {parseFloat(owd.amount).toLocaleString({maximumFractionDigits:2})}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.toAccount}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.date}</div>
+    </td>
+
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300"><FaTrash className='text-red-500' onClick={()=>openTDelete(owd.id)}/></div>
+    </td>
+  </tr>
+ 
+
+    )}
+   
+    </tbody>
+    </table>
+    <span className='ml-4 dark:text-white'>Total:-<b>ETB-{account?.Transfers?.reduce((acc,curr)=>acc+parseFloat(curr.amount),0).toLocaleString()}</b></span>
+    </div>
+    </div>
+    
+    )}
+
+  </div>
+</div>
+
+
+
+
+<div className="bg-gray-100 dark:bg-gray-800 flex flex-col items-center justify-center font-sans mb-6 overflow-x-auto mt-6">
+  <div className="w-full">
+    <div className="flex">
+      <button
+        className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 text-dark-900 dark:text-gray-100  p-4 shadow-md"
+        onClick={toggleReceived}
+      >
+      <Badge type="danger" className="font-bold">Received Transfers</Badge>
+         {isReceivedOpen ? (
+          <FaChevronUp className="text-xl ml-4" />
+        ) : (
+          <FaChevronDown className="text-xl ml-4" />
+        )}
+
+      </button>
+      
+      
+   
+    </div>
+
+        {isReceivedOpen&&(<div className="bg-white dark:bg-gray-700 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 flex flex-wrap">
+    <div className="overflow-x-auto">
+    <table className="min-w-full divide-gray-200 dark:divide-gray-600">
+    <thead className="bg-gray-50 dark:bg-gray-800">
+    <tr>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Transfer ID
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Amount
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        FromAccount
+      </th>
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Date
+      </th>
+
+      <th scope="col"className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        Delete
+      </th>
+    
+    </tr>
+  </thead>
+  <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-700 dark:divide-gray-600">
+    {fromTransfers?.map((owd)=>
+    
+    <tr key={owd.id}>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">#{owd.id}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">ETB - {parseFloat(owd.amount).toLocaleString({maximumFractionDigits:2})}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.owda_account?.name}</div>
+    </td>
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300">{owd.date}</div>
+    </td>
+
+    <td className="px-6 py-4 whitespace-nowrap">
+      <div className="text-sm font-medium text-gray-900 dark:text-gray-300"><FaTrash className='text-red-500' onClick={()=>openTDelete(owd.id)}/></div>
+    </td>
+  </tr>
+ 
+
+    )}
+   
+    </tbody>
+    </table>
+    <span className='ml-4 dark:text-white'>Total:-<b>ETB-{fromTransfers?.reduce((acc,curr)=>acc+parseFloat(curr.amount),0).toLocaleString()}</b></span>
+
+    </div>
+    </div>
+    
+    )}
+
+  </div>
+</div>
         
 
 

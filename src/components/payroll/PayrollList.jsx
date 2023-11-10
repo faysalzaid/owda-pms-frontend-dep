@@ -14,7 +14,7 @@ import RoundIcon from '../RoundIcon'
 import response from '../../utils/demo/tableData'
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { DocumentAddIcon } from '@heroicons/react/outline';
-
+import "config/custom-button.css"
 import { ErrorAlert, SuccessAlert } from "components/Alert";import 'config/custom-button.css'
 
 
@@ -96,8 +96,9 @@ const PayrollList = () => {
       useEffect(()=>{
         const getData=async()=>{
             await axios.get(`${url}/payrol`,{withCredentials:true}).then((resp)=>{
+              console.log(resp.data);
+              if(resp.data.error) return setOpenError({open:true,message:`${resp.data.error}`})
                 setPayrollData(resp.data)
-              
             }).catch((error)=>{
                 if (error.response && error.response.data && error.response.data.error) {
                     setOpenError({open:true,message:`${error.response.data.error}`});
@@ -253,7 +254,7 @@ const PayrollList = () => {
         horizontal="right"
       />
 
-            {/* Search section */}
+          {/* Search section */}
             <div className='mb-5'>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div className="relative">
@@ -262,7 +263,7 @@ const PayrollList = () => {
             </div>
             <Input type="search" id="default-search" value={searchTerm} onChange={(e)=>searchHandler(e.target.value)} 
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 
-            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Companies, Locations..." required />
+            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search dates(2023-11-01), Total Earnings..." required />
         </div>
             
         </div>
@@ -294,7 +295,7 @@ const PayrollList = () => {
 
         {/* End of delete Section */}
 
-        <Button onClick={openModal}>New Payroll</Button>
+        {/* <Button onClick={openModal} className="custom-button">New Payroll</Button> */}
   
       
         </TableContainer>
@@ -437,8 +438,6 @@ const PayrollList = () => {
           <TableRow>
           <TableCell className="font-semibold">Date</TableCell>
             <TableCell className="font-semibold">Employee</TableCell>
-            <TableCell className="font-semibold">Position</TableCell>
-            <TableCell className="font-semibold">Basic Salary</TableCell>
             <TableCell className="font-semibold">Medical Allow</TableCell>
             <TableCell className="font-semibold">Taxabel Amount</TableCell>
             <TableCell className="font-semibold">Hardship Allow</TableCell>
@@ -458,8 +457,6 @@ const PayrollList = () => {
               <TableRow>
                 <TableCell><span className="text-sm font-semibold">{row.date}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{employeeData.map((usr)=>usr.id===row.EmployeeId?usr.name:"")}</span></TableCell>
-                <TableCell><span className="text-sm font-semibold">{row.position}</span></TableCell>
-                <TableCell><span className="text-sm font-semibold">{row?.basicSalary.toLocaleString()}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row?.medicalAllowance.toLocaleString()}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row?.taxableAmount.toLocaleString()}</span></TableCell>
                 <TableCell><span className="text-sm font-semibold">{row?.hardshipAllowance.toLocaleString()}</span></TableCell>
@@ -476,9 +473,7 @@ const PayrollList = () => {
                     <EditIcon className="h-5 w-5 text-blue-600" />
                   </Button>
                   </Link>
-                  <Button layout="link" size="small" onClick={() => openDelete(row.id)}>
-                    <TrashIcon className="h-5 w-5 text-red-600" />
-                  </Button>
+                 
                 </TableCell>
               </TableRow>
             </Fragment>

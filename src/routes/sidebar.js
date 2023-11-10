@@ -103,7 +103,7 @@ routes = [{
             {
                 path: '/app/activity',
                 icon: 'FaSortAmountUp',
-                name: 'Expenses',
+                name: 'Expenditures',
                 roles: ['admin', 'general_admin', 'executive_director', 'finance_admin']
 
             },

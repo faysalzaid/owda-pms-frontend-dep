@@ -111,7 +111,7 @@ function EmployeeDetail(props) {
         let isMounted = true
         if(isMounted){
           await axios.get(`${url}/employees/${id}`,{withCredentials:true}).then((resp)=>{
-            console.log('Employees',resp.data);
+            // console.log('Employees',resp.data);
             if(resp.data.error){
               setOpenError({open:true, message:`${resp.data.error}`})
             }else{
@@ -211,7 +211,7 @@ function EmployeeDetail(props) {
         formData.append('duration',emplForm.duration)
         formData.append('pCategory',emplForm.pCategory)
         formData.append('lastPayment',emplForm.lastPayment)
-        console.log('The new formdata',formData);
+        // console.log('The new formdata',formData);
          await axios.post(`${url}/employees/${id}`,formData,{withCredentials:true}).then((resp)=>{
           // console.log('from server',resp.data);
           if(resp.data.error){
